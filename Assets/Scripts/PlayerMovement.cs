@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,36 +6,35 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 5f;
-    Vector2 moveInput;
-    Rigidbody2D rigidBody2D;
-    CapsuleCollider2D bodCapsuleCollider2D;
-    BoxCollider2D feetBoxCollider2D;
-    Animator animator;
-    float gravityScaleAtStart;
+    [SerializeField] Vector2 deathKick = new Vector2(5f, 5f);
+
+    private Rigidbody2D rigidBody2D;
+    private CapsuleCollider2D bodyCapsuleCollider2D;
+    private Animator animator;
+
+    private bool alive = true;
+    private bool canJump = true;
+    private float gravityScaleAtStart;
+    private Vector2 moveInput;
 
     private void Awake()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        bodCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
-        feetBoxCollider2D = GetComponent<BoxCollider2D>();
+        bodyCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
+
         gravityScaleAtStart = rigidBody2D.gravityScale;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Run();
-        FlipSprite();
-        ClimbLadder();
-    }
+        if (!alive) return;
 
-   
+        Run();
+        ClimbLadder();
+        Die();
+    }
 
     private void Run()
     {
@@ -47,19 +43,15 @@ public class PlayerMovement : MonoBehaviour
 
         bool playerHasSpeedX = Mathf.Abs(rigidBody2D.velocity.x) > Mathf.Epsilon;
 
+        if (playerHasSpeedX)
+            transform.localScale = new Vector2(Mathf.Sign(rigidBody2D.velocity.x), 1f);
+
         animator.SetBool("Running", playerHasSpeedX);
     }
-    private void FlipSprite()
-    {
-        bool playerHasSpeedX = Mathf.Abs(rigidBody2D.velocity.x) > Mathf.Epsilon;
-        if (playerHasSpeedX)
-        {
-            transform.localScale = new Vector2(Mathf.Sign(rigidBody2D.velocity.x), 1f);
-        }
-    }
+
     void ClimbLadder()
     {
-        if (!feetBoxCollider2D.IsTouchingLayers(LayerMask.GetMask("Climbing")))
+        if (!bodyCapsuleCollider2D.IsTouchingLayers(LayersSingleton.Instance.ClimbingLayer))
         {
             rigidBody2D.gravityScale = gravityScaleAtStart;
             animator.SetBool("Climbing", false);
@@ -74,21 +66,56 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("Climbing", playerHasSpeedY);
     }
 
+    private void Die()
+    {
+        if (bodyCapsuleCollider2D.IsTouchingLayers(LayersSingleton.Instance.EnemyLayer))
+        {
+            alive = false;
+            rigidBody2D.velocity = deathKick;
+            animator.SetTrigger("Die");
+            return;
+        }
+
+        if (bodyCapsuleCollider2D.IsTouchingLayers(LayersSingleton.Instance.HazardLayer) || bodyCapsuleCollider2D.IsTouchingLayers(LayersSingleton.Instance.WaterLayer))
+        {
+            alive = false;
+            animator.SetTrigger("Die");
+        }
+    }
+
     void OnMove(InputValue value)
     {
+        if (!alive) return;
+
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
     {
-        if (!feetBoxCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground"))) return;
+        if (!alive) return;
 
-        if(value.isPressed)
+
+        if (value.isPressed)
         {
-            rigidBody2D.velocity = new Vector2(0f, jumpSpeed);
+            if(canJump)
+            {
+                rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, jumpSpeed);
+                animator.SetBool("Jumping", true);
+            }
         }
-
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (bodyCapsuleCollider2D.IsTouchingLayers(LayersSingleton.Instance.PlatformLayer))
+        {
+            canJump = true;
+            animator.SetBool("Jumping", false);
+        }
+        else
+        {
+            canJump = false;
+        }
+    }
 }
