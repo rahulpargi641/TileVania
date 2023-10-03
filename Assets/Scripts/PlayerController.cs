@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool alive = true;
     private bool canJump = true;
+    private bool shootingAnimationEnd = false;
     private float gravityScaleAtStart;
     private Vector2 moveInput;
 
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
         Run();
         ClimbLadder();
+        Shooting();
         Die();
     }
 
@@ -83,6 +85,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Shooting()
+    {
+        if (shootingAnimationEnd)
+        {
+            animator.SetBool("Shooting", false);
+            shootingAnimationEnd = false;
+        }
+    }
+
     void OnMove(InputValue value)
     {
         if (!alive) return;
@@ -95,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!alive) return;
 
-
         if (value.isPressed)
         {
             if(canJump)
@@ -105,6 +115,22 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    void OnFire(InputValue value)
+    {
+        if (!alive) return;
+
+        if(value.isPressed)
+        {
+            animator.SetBool("Shooting", true);
+        }
+    }
+
+    public void ShootingAnimationEnded()
+    {
+        shootingAnimationEnd = true;
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
