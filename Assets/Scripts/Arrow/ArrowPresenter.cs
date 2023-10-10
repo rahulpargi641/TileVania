@@ -1,24 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowController : MonoBehaviour
+public class ArrowPresenter : MonoBehaviour
 {
-    [SerializeField] float arrowSpeed = 20f;
     private Rigidbody2D rigidbody;
-    private float xSpeed;
+    private ArrowModel model;
+
 
     // Start is called before the first frame update
     void OnEnable()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        xSpeed = transform.localScale.y * arrowSpeed;
+
+        model = new ArrowModel();
+        model.xSpeed = transform.localScale.y * model.ArrowSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        rigidbody.velocity = new Vector2(xSpeed, 0f);
+        rigidbody.velocity = new Vector2(model.xSpeed, 0f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
