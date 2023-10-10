@@ -1,25 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyPresenter : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 1f;
     private Rigidbody2D rigidBody2D;
+    private EnemyModel model;
+
     private void Awake()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
     }
-   
+
+    private void Start()
+    {
+        model = new EnemyModel();
+    }
+
     void Update()
     {
-        rigidBody2D.velocity = new Vector2(moveSpeed, 0f);
+        rigidBody2D.velocity = new Vector2(model.MoveSpeed, 0f);
+    }
+
+    public void InitialzeModel(EnemyModel model)
+    {
+        this.model = model;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        moveSpeed = -moveSpeed;
+        model.MoveSpeed = -model.MoveSpeed;
         FlipEnemy();
     }
 

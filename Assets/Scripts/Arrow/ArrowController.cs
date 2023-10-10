@@ -20,4 +20,18 @@ public class ArrowController : MonoBehaviour
     {
         rigidbody.velocity = new Vector2(xSpeed, 0f);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        EnemyPresenter enemy = collision.GetComponent<EnemyPresenter>();
+        if (enemy)
+            Destroy(enemy.gameObject);
+
+        gameObject.SetActive(false);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameObject.SetActive(false);
+    }
 }

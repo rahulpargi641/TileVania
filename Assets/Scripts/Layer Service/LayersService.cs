@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LayersSingleton : MonoBehaviour
+public class LayersService : MonoSingletonGeneric<LayersService>
 {
     [SerializeField] private LayerMask platformLayer;
     [SerializeField] private LayerMask enemyLayer;
@@ -13,13 +13,13 @@ public class LayersSingleton : MonoBehaviour
     public LayerMask WaterLayer => waterLayer;
     public LayerMask HazardLayer => hazardLayer;
 
-    public static LayersSingleton Instance { get; private set; }
+    //public static LayersSingleton Instance { get; private set; }
 
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            DontDestroyOnLoad(gameObject);
-    }
+    //void Awake()
+    //{
+    //    if (Instance == null)
+    //        Instance = this;
+    //    else
+    //        DontDestroyOnLoad(gameObject);
+    //}
 }

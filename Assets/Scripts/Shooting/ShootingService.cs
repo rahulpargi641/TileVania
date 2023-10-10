@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingController : MonoSingletonGeneric<ShootingController>
+public class ShootingService : MonoSingletonGeneric<ShootingService>
 {
     [SerializeField] GameObject arrowPrefab;
     [SerializeField] Transform spawnPoint;
@@ -11,7 +11,6 @@ public class ShootingController : MonoSingletonGeneric<ShootingController>
     private int poolSize = 10;
     private float spawnRate = 1.0f;
     private float nextSpawnTime;
-
 
     // Start is called before the first frame update
     private void Start()
