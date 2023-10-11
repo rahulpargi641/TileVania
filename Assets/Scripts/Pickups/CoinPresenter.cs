@@ -6,6 +6,7 @@ public class CoinPresenter : MonoBehaviour
     {
         if (collision.GetComponent<PlayerPresenter>())
         {
+            AudioService.Instance.PlaySound(SoundType.CoinPickup);
             gameObject.SetActive(false);
         }
     }
