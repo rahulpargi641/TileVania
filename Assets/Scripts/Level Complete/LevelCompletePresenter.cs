@@ -12,8 +12,8 @@ public class LevelCompletePresenter : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(LoadNextLevel());
-        LoadNextLevel();
+        if(collision.GetComponent<PlayerPresenter>())
+            StartCoroutine(LoadNextLevel());
     }
 
     private IEnumerator LoadNextLevel()

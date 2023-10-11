@@ -27,10 +27,10 @@ public class PlayerPresenter : MonoBehaviour
     {
         if (!model.IsAlive) return;
 
-        Run();
-        ClimbLadder();
-        Shooting();
-        Die();
+        ProcessRunning();
+        ProcessClimbingLadder();
+        ProcessShooting();
+        ProcessDeath();
     }
 
     public void InitializeModel(PlayerModel model)
@@ -38,7 +38,7 @@ public class PlayerPresenter : MonoBehaviour
         this.model = model;
     }
 
-    private void Run()
+    private void ProcessRunning()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * model.RunSpeed, rigidBody.velocity.y);
         rigidBody.velocity = playerVelocity;
@@ -51,7 +51,7 @@ public class PlayerPresenter : MonoBehaviour
         animator.SetBool("Running", playerHasSpeedX);
     }
 
-    void ClimbLadder()
+    void ProcessClimbingLadder()
     {
         if (!bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.ClimbingLayer))
         {
@@ -68,7 +68,7 @@ public class PlayerPresenter : MonoBehaviour
         animator.SetBool("Climbing", playerHasSpeedY);
     }
 
-    private void Die()
+    private void ProcessDeath()
     {
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.EnemyLayer))
         {
@@ -83,9 +83,21 @@ public class PlayerPresenter : MonoBehaviour
             model.IsAlive = false;
             animator.SetTrigger("Die");
         }
+
+        if(model.IsAlive)
+        {
+            // Load Game Over Screen via invoking the event
+            // Destroy game session
+        }
     }
 
-    private void Shooting()
+    public void TakeLife()
+    {
+        model.Lives--;
+        // Load the current scene again
+    }
+
+    private void ProcessShooting()
     {
         if (model.ShootingAnimationEnd)
         {
