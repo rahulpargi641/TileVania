@@ -12,14 +12,4 @@ public class LayersService : MonoSingletonGeneric<LayersService>
     public LayerMask ClimbingLayer => climbingLayer;
     public LayerMask WaterLayer => waterLayer;
     public LayerMask HazardLayer => hazardLayer;
-
-    //public static LayersSingleton Instance { get; private set; }
-
-    //void Awake()
-    //{
-    //    if (Instance == null)
-    //        Instance = this;
-    //    else
-    //        DontDestroyOnLoad(gameObject);
-    //}
 }

@@ -2,7 +2,7 @@
 public class ArrowModel
 {
     public float ArrowSpeed { get; private set; }
-    public float xSpeed { get; set; }
+    public float XSpeed { get; set; }
 
     public ArrowModel()
     {

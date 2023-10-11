@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyPresenter : MonoBehaviour
 {
     private Rigidbody2D rigidBody2D;
+
     private EnemyModel model;
 
     private void Awake()

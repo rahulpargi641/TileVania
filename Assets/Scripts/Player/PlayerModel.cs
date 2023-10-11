@@ -13,7 +13,7 @@ public class PlayerModel
 
     public PlayerModel()
     {
-        RunSpeed = 8f;
+        RunSpeed = 6.5f;
         JumpSpeed = 9f;
         ClimbSpeed = 5f;
         DeathKick = new Vector2(5f, 5f);
