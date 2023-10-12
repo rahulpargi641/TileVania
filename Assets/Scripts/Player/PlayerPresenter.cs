@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,8 @@ public class PlayerPresenter : MonoBehaviour
 
     private Vector2 moveInput;
     private PlayerModel model;
+
+    public static event Action onPlayerDeath;
 
     private void Awake()
     {
@@ -74,6 +77,9 @@ public class PlayerPresenter : MonoBehaviour
         {
             model.IsAlive = false;
             rigidBody.velocity = model.DeathKick;
+
+            onPlayerDeath?.Invoke();
+
             animator.SetTrigger("Die");
             return;
         }
@@ -81,6 +87,9 @@ public class PlayerPresenter : MonoBehaviour
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.WaterLayer))
         {
             model.IsAlive = false;
+
+            onPlayerDeath?.Invoke();
+
             animator.SetTrigger("Die");
         }
 
