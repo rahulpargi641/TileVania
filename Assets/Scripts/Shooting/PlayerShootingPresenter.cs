@@ -1,16 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingService : MonoSingletonGeneric<ShootingService>
+public class PlayerShootingPresenter : MonoBehaviour
 {
     [SerializeField] GameObject arrowPrefab;
     [SerializeField] Transform spawnPoint;
 
     private List<GameObject> arrowPool;
     private int poolSize = 10;
-    private float spawnRate = 1.0f;
-    private float nextSpawnTime;
 
     // Start is called before the first frame update
     private void Start()
