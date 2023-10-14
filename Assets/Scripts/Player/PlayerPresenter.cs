@@ -4,14 +4,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerPresenter : MonoBehaviour
 {
+    public static event Action onPlayerLivesChange;
+    public static event Action onPlayerDeath;
+
     private Rigidbody2D rigidBody;
     private CapsuleCollider2D bodyCapsuleCollider;
     private Animator animator;
 
     private Vector2 moveInput;
     private PlayerModel model;
-
-    public static event Action onPlayerDeath;
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class PlayerPresenter : MonoBehaviour
         ProcessRunning();
         ProcessClimbingLadder();
         ProcessShooting();
-        ProcessDeath();
+        ProcessPlayerHurt();
     }
 
     public void InitializeModel(PlayerModel model)
@@ -71,39 +72,35 @@ public class PlayerPresenter : MonoBehaviour
         animator.SetBool("Climbing", playerHasSpeedY);
     }
 
-    private void ProcessDeath()
+    private void ProcessPlayerHurt()
     {
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.EnemyLayer))
         {
-            model.IsAlive = false;
-            rigidBody.velocity = model.DeathKick;
-
-            onPlayerDeath?.Invoke();
-
-            animator.SetTrigger("Die");
+            DecreaseLives();
+            rigidBody.velocity = model.pushVelocity;
             return;
         }
 
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.WaterLayer))
         {
-            model.IsAlive = false;
-
-            onPlayerDeath?.Invoke();
-
-            animator.SetTrigger("Die");
-        }
-
-        if(model.IsAlive)
-        {
-            // Load Game Over Screen via invoking the event
-            // Destroy game session
+            DecreaseLives();
         }
     }
 
-    public void TakeLife()
+    private void DecreaseLives()
     {
         model.Lives--;
-        // Load the current scene again
+        if (model.Lives <= 0)
+            PlayerDead();
+    }
+
+    private void PlayerDead()
+    {
+        model.IsAlive = false;
+
+        onPlayerDeath?.Invoke();
+
+        animator.SetTrigger("Die");
     }
 
     private void ProcessShooting()

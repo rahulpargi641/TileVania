@@ -10,6 +10,7 @@ public class LevelCompletePresenter : MonoBehaviour
     {
         model = new LevelCompleteModel();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.GetComponent<PlayerPresenter>())

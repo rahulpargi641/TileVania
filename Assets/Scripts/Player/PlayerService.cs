@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerService : MonoSingletonGeneric<PlayerService>
 {
+    [SerializeField] PlayerSO playerSO;
     [SerializeField] PlayerPresenter playerPresenter;
 
     void Awake()
@@ -11,8 +12,8 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
 
     private void SpawnPlayer()
     {
-        PlayerModel playerModel = new PlayerModel();
-        //playerPresenter = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);        
+        PlayerModel playerModel = new PlayerModel(playerSO);
+        //playerPresenter = Instantiate(playerSO.playerPresenter, spawnPoint.position, spawnPoint.rotation);        
         playerPresenter.InitializeModel(playerModel);
     }
 }
