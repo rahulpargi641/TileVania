@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ArrowPresenter : MonoBehaviour
 {
+    [SerializeField] ItemSO arrowConfig;
     private Rigidbody2D rigidbody;
 
     private ArrowModel model;
@@ -10,7 +11,7 @@ public class ArrowPresenter : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
 
-        model = new ArrowModel();
+        model = new ArrowModel(arrowConfig);
         model.XSpeed = transform.localScale.y * model.ArrowSpeed;
     }
 

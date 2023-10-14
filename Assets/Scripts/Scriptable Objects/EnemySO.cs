@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEnemy", menuName = "ScriptableObjects/Enemy")]
 public class EnemySO : ScriptableObject
 {
-    [Header("Player Info")]
+    [Header("Enemy Info")]
     public new string name;
     public EnemyPresenter enemyPresenter;
 

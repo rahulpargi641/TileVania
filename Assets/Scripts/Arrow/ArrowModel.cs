@@ -4,8 +4,12 @@ public class ArrowModel
     public float ArrowSpeed { get; private set; }
     public float XSpeed { get; set; }
 
-    public ArrowModel()
+    private ItemSO arrowConfig;
+
+    public ArrowModel(ItemSO arrowConfig)
     {
-        ArrowSpeed = 20f;
+        this.arrowConfig = arrowConfig;
+
+        ArrowSpeed = arrowConfig.itemSpeed;
     }
 }

@@ -10,5 +10,6 @@ public enum SoundType
 public enum ItemType
 {
     Consumable,
-    Damaging,
+    Weapon,
+    Armor
 }
