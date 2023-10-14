@@ -9,16 +9,16 @@ public class PlayerLivesService : MonoSingletonGeneric<PlayerLivesService>
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPresenter.onPlayerDeath += DecreaseLives;
+        PlayerPresenter.onPlayerLivesChange += UpdatePlayerLivesUI;
     }
 
     void OnDestroy()
     {
-        PlayerPresenter.onPlayerDeath -= DecreaseLives;
+        PlayerPresenter.onPlayerLivesChange -= UpdatePlayerLivesUI;
     }
 
-    public void DecreaseLives()
+    public void UpdatePlayerLivesUI(int currentLives)
     {
-        playerLivesPresenter.DecreaseLives();
+        playerLivesPresenter.UpdatePlayerLivesUI(currentLives);
     }
 }

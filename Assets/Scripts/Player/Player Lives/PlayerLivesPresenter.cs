@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerLivesPresenter : MonoBehaviour
 {
     private TextMeshProUGUI livesText;
-    private int currentLives = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -12,9 +11,8 @@ public class PlayerLivesPresenter : MonoBehaviour
         livesText = GetComponent<TextMeshProUGUI>();
     }
 
-    public void DecreaseLives()
+    public void UpdatePlayerLivesUI(int currentLives)
     {
-        currentLives--;
         livesText.text = currentLives.ToString();
     }
 }

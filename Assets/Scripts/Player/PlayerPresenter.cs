@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerPresenter : MonoBehaviour
 {
-    public static event Action onPlayerLivesChange;
+    public static event Action<int> onPlayerLivesChange;
     public static event Action onPlayerDeath;
 
     private Rigidbody2D rigidBody;
@@ -34,7 +34,7 @@ public class PlayerPresenter : MonoBehaviour
         ProcessRunning();
         ProcessClimbingLadder();
         ProcessShooting();
-        ProcessPlayerHurt();
+        ProcessPlayerDeath();
     }
 
     public void InitializeModel(PlayerModel model)
@@ -72,24 +72,21 @@ public class PlayerPresenter : MonoBehaviour
         animator.SetBool("Climbing", playerHasSpeedY);
     }
 
-    private void ProcessPlayerHurt()
+    private void ProcessPlayerDeath()
     {
-        if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.EnemyLayer))
-        {
-            DecreaseLives();
-            rigidBody.velocity = model.pushVelocity;
-            return;
-        }
-
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.WaterLayer))
         {
-            DecreaseLives();
+            PlayerDead();
         }
     }
 
     private void DecreaseLives()
     {
         model.Lives--;
+
+        if(model.Lives >= 0)
+            onPlayerLivesChange?.Invoke(model.Lives);
+
         if (model.Lives <= 0)
             PlayerDead();
     }
@@ -117,7 +114,6 @@ public class PlayerPresenter : MonoBehaviour
         if (!model.IsAlive) return;
 
         moveInput = value.Get<Vector2>();
-        Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
@@ -152,10 +148,23 @@ public class PlayerPresenter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.GetComponent<EnemyPresenter>())
+        {
+            animator.SetBool("Hurt", true);
+            rigidBody.velocity = model.pushVelocity;
+            AudioService.Instance.PlaySound(SoundType.Hurt);
+            DecreaseLives();
+        }
+
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.PlatformLayer))
         {
-            model.CanJump = true;
             animator.SetBool("Jumping", false);
+            model.CanJump = true;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        animator.SetBool("Hurt", false);
     }
 }

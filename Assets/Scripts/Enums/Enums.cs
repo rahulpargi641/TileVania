@@ -2,6 +2,7 @@
 public enum SoundType
 {
     CoinPickup,
+    Hurt,
     Death
 }
 

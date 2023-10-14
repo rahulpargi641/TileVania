@@ -18,6 +18,6 @@ public class ScoreService : MonoSingletonGeneric<ScoreService>
     // Called when onCoinPickup event is invoked
     public void IncreaseScore(int pointsGain)
     {
-        scorePresenter.IncreaseScore(pointsGain);
+        //scorePresenter.IncreaseScore(pointsGain);
     }
 }
