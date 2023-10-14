@@ -1,10 +1,18 @@
+using UnityEngine;
 
 public class EnemyModel
 {
     public float MoveSpeed { get; set; }
+    public Vector2 deathKick { get; private set; }
 
-    public EnemyModel()
+
+    private EnemySO enemySO;
+
+    public EnemyModel(EnemySO enemySO)
     {
-        MoveSpeed = 1f;
+        this.enemySO = enemySO;
+
+        MoveSpeed = enemySO.moveSpeed;
+        deathKick = enemySO.deathKick;
     }
 }

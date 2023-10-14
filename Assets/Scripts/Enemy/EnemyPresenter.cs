@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyPresenter : MonoBehaviour
 {
+    [SerializeField] EnemySO enemySO;
+
     private Rigidbody2D rigidBody2D;
 
     private EnemyModel model;
@@ -13,7 +15,7 @@ public class EnemyPresenter : MonoBehaviour
 
     private void Start()
     {
-        model = new EnemyModel();
+        model = new EnemyModel(enemySO);
     }
 
     void Update()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyService : MonoBehaviour
 {
-    [SerializeField] EnemyPresenter enemyPrefab;
+    [SerializeField] EnemySO enemySO;
     private List<EnemyPresenter> enemyPresenters;
 
     // Start is called before the first frame update
@@ -15,8 +15,8 @@ public class EnemyService : MonoBehaviour
 
     public void SpawnEnemy(Transform spawnPoint)
     {
-        EnemyModel enemyModel = new EnemyModel();
-        EnemyPresenter enemyPresenter = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        EnemyModel enemyModel = new EnemyModel(enemySO);
+        EnemyPresenter enemyPresenter = Instantiate(enemySO.enemyPresenter, spawnPoint.position, spawnPoint.rotation);
         enemyPresenter.InitialzeModel(enemyModel);
 
         enemyPresenters.Add(enemyPresenter);

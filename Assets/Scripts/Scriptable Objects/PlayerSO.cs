@@ -5,7 +5,7 @@ public class PlayerSO : ScriptableObject
 {
     [Header("Player Info")]
     public new string name;
-    public PlayerPresenter playerView;
+    public PlayerPresenter player;
     public int lives = 3;
 
     [Header("Movement")]
