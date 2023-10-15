@@ -3,11 +3,12 @@ using UnityEngine;
 public class ArrowPresenter : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
-    public ArrowModel Model {private get; set; }
+
+    private ArrowModel model;
 
     public void InitializeModel(ArrowModel model)
     {
-        Model = model;
+        this.model = model;
     }
 
     private void Awake()
@@ -18,8 +19,8 @@ public class ArrowPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Model.XSpeed = transform.localScale.y * Model.ArrowSpeed;
-        rigidbody.velocity = new Vector2(Model.XSpeed, 0f);
+        model.XSpeed = transform.localScale.y * model.ArrowSpeed;
+        rigidbody.velocity = new Vector2(model.XSpeed, 0f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

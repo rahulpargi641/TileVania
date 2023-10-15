@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   itemID: 0
-  itemType: 0
+  itemType: 1
   value: 0
-  speed: 0
-  arrowPresenter: {fileID: 0}
+  speed: 20
+  arrowPresenter: {fileID: 8596134426193193828, guid: 8718d371918726a42a8d4394c1b458e4, type: 3}

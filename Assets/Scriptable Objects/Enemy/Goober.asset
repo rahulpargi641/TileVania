@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3511ecae0407242b39b2465e3fc23e, type: 3}
   m_Name: Goober
   m_EditorClassIdentifier: 
-  name: 
-  enemyPresenter: {fileID: 0}
+  name: Goober
+  enemyPresenter: {fileID: 8952156789144557141, guid: fea4fa0d30142274187550be2a933fc2, type: 3}
   moveSpeed: 1
   deathKick: {x: 5, y: 5}
   idleAnimName: Idle
