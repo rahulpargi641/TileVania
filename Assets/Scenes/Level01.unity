@@ -43952,6 +43952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1725956523}
+  - component: {fileID: 1725956524}
   m_Layer: 0
   m_Name: Enemy Service
   m_TagString: Untagged
@@ -43974,6 +43975,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1725956524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725956522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818ef14f4982ca4da5fdde135822f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySO: {fileID: 11400000, guid: f4e2b010efac24a4c94d1262dcb7b1f2, type: 2}
 --- !u!1 &1803109982
 GameObject:
   m_ObjectHideFlags: 0
@@ -57040,6 +57054,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1284941134011057019, guid: 92a94b942ff949a44a161f4fdcda2dcd, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284941134011057019, guid: 92a94b942ff949a44a161f4fdcda2dcd, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284941134011057019, guid: 92a94b942ff949a44a161f4fdcda2dcd, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2698390700066553773, guid: 92a94b942ff949a44a161f4fdcda2dcd, type: 3}
       propertyPath: runSpeed
       value: 6.5
@@ -57129,6 +57155,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8952156789144557141, guid: fea4fa0d30142274187550be2a933fc2, type: 3}
+      propertyPath: enemySO
+      value: 
+      objectReference: {fileID: 11400000, guid: f4e2b010efac24a4c94d1262dcb7b1f2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fea4fa0d30142274187550be2a933fc2, type: 3}
 --- !u!19719996 &4513729941957006364

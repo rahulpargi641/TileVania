@@ -10,6 +10,6 @@ public class ArrowModel
     {
         this.arrowConfig = arrowConfig;
 
-        ArrowSpeed = arrowConfig.itemSpeed;
+        ArrowSpeed = arrowConfig.speed;
     }
 }
