@@ -27,9 +27,9 @@ public class ArrowPresenter : MonoBehaviour
     {
         EnemyPresenter enemy = collision.GetComponent<EnemyPresenter>();
         if (enemy)
-            Destroy(enemy.gameObject);
+            Destroy(enemy.gameObject);  // Notify enemy dead and send back to pool
 
-        ArrowService.Instance.ReturnArrowToPool(this);
+        ArrowService.Instance.ReturnArrowToPool(this);  
     }
 
     // If arrow collides with wall or other object other than enemy

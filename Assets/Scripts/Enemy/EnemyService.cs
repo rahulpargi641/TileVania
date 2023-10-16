@@ -25,4 +25,10 @@ public class EnemyService : MonoSingletonGeneric<EnemyService>
 
         enemyPresenters.Add(enemyPresenter);
     }
+
+    private void ReturnEnemyToPool(EnemyPresenter enemyPresenter)
+    {
+        enemyPresenter.DisableEnemy();
+        enemyPool.ReturnItem(enemyPresenter);
+    }
 }

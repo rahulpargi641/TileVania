@@ -1,56 +1,67 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ObjectPoolGeneric<T>
 {
-    private List<PooledItem<T>> pooledItems = new List<PooledItem<T>>();
+    private Dictionary<T, Item> pooledItems = new Dictionary<T, Item>();
 
-    protected virtual T GetItemFromPool()
+    public T GetItemFromPool()
     {
-        if (pooledItems.Count > 0)
+        foreach (var pooledItem in pooledItems)
         {
-            PooledItem<T> pooledItem = pooledItems.Find(item => item.IsUsed == false);
-            if (pooledItem != null)
+            if (!pooledItem.Value.IsUsed)
             {
-                pooledItem.IsUsed = true;
-                return pooledItem.Item;
+                pooledItem.Value.IsUsed = true;
+                return pooledItem.Key;
             }
         }
 
-        return CreateNewItemAndStoreInPool();
+        T item = CreateItem();
+        Item newItem = new Item();
+        newItem.IsUsed = true;
+        pooledItems[item] = newItem;
+
+        return item;
     }
 
-
-    private T CreateNewItemAndStoreInPool()
+    public void ReturnItem(T itemToReturn)
     {
-        PooledItem<T> item = new PooledItem<T>();
-        item.Item = CreateItem();
-        item.IsUsed = true;
-
-        pooledItems.Add(item);
-
-        return item.Item;
+        if (pooledItems.TryGetValue(itemToReturn, out var pooledItem))
+        {
+            pooledItem.IsUsed = false;
+            Console.WriteLine("Item returned to the pool: " + itemToReturn);
+        }
     }
 
-    public virtual void ReturnItem(T gameObjectToReturn)
-    {
-        PooledItem<T> item = pooledItems.Find(item => item.Item.Equals(gameObjectToReturn));
-        item.IsUsed = false;
-        Debug.Log("Item returned to the pool" + item.Item);
-    }
     protected virtual T CreateItem()
     {
         return default(T);
     }
 
-    public virtual void Initialize(T item)
+    public void Initialize(T item)
     {
         // item will be used to assign the member variable in child classes
     }
 
-    private class PooledItem<T>
+    public void CleanupUnusedItems()
     {
-        public T Item;
+        var unusedItems = new List<T>();
+        foreach (var kvp in pooledItems)
+        {
+            if (!kvp.Value.IsUsed)
+            {
+                unusedItems.Add(kvp.Key);
+            }
+        }
+
+        foreach (var item in unusedItems)
+        {
+            pooledItems.Remove(item);
+        }
+    }
+
+    private class Item
+    {
         public bool IsUsed;
     }
 }

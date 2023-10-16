@@ -17,5 +17,4 @@ public class ScorePresenter : MonoBehaviour
         currentScore += pointsGain;
         scoreText.text = currentScore.ToString();
     }
-
 }

@@ -11,7 +11,7 @@ public class ArrowService : MonoSingletonGeneric<ArrowService>
         arrowPool = new ArrowPool();
     }
 
-    public ArrowPresenter SpawnArrow(Vector2 spawnPointPos, Vector2 spawnPointScale)
+    public void SpawnArrow(Vector2 spawnPointPos, Vector2 spawnPointScale)
     {
         ArrowModel arrowModel = new ArrowModel(arrowSO);
 
@@ -19,8 +19,6 @@ public class ArrowService : MonoSingletonGeneric<ArrowService>
         arrowPresenter.InitializeModel(arrowModel);
         arrowPresenter.SetTransform(spawnPointPos, spawnPointScale);
         arrowPresenter.EnableArrow();
-
-        return arrowPresenter;
     }
 
     public void ReturnArrowToPool(ArrowPresenter arrowPresenter)
