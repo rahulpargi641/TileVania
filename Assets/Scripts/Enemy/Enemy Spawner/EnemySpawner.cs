@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] Transform[] spawnPoints;
-    //[SerializeField] EnemyPresenter[] enemyViews;
 
     private bool areEnemiesSpawned = false;
 
