@@ -5,8 +5,10 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
     [SerializeField] PlayerSO playerSO;
     [SerializeField] PlayerPresenter playerPresenter;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         SpawnPlayer();
     }
 

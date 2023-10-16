@@ -7,9 +7,11 @@ public class LayersService : MonoSingletonGeneric<LayersService>
     [SerializeField] private LayerMask climbingLayer;
     [SerializeField] private LayerMask waterLayer;
     [SerializeField] private LayerMask hazardLayer;
+    [SerializeField] private LayerMask bouncyMashroomLayer;
     public LayerMask PlatformLayer => platformLayer;
     public LayerMask EnemyLayer => enemyLayer;
     public LayerMask ClimbingLayer => climbingLayer;
     public LayerMask WaterLayer => waterLayer;
     public LayerMask HazardLayer => hazardLayer;
+    public LayerMask BouncyMashroomLayer => bouncyMashroomLayer;
 }

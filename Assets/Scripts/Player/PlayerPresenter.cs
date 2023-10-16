@@ -47,12 +47,17 @@ public class PlayerPresenter : MonoBehaviour
         Vector2 playerVelocity = new Vector2(moveInput.x * model.RunSpeed, rigidBody.velocity.y);
         rigidBody.velocity = playerVelocity;
 
+        PlayerRunAnimation();
+    }
+
+    private void PlayerRunAnimation()
+    {
         bool playerHasSpeedX = Mathf.Abs(rigidBody.velocity.x) > Mathf.Epsilon;
 
         if (playerHasSpeedX)
             transform.localScale = new Vector2(Mathf.Sign(rigidBody.velocity.x), 1f);
 
-        animator.SetBool("Running", playerHasSpeedX);
+        animator.SetBool(model.RunBoolName, playerHasSpeedX);
     }
 
     void ProcessClimbingLadder()
@@ -60,7 +65,7 @@ public class PlayerPresenter : MonoBehaviour
         if (!bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.ClimbingLayer))
         {
             rigidBody.gravityScale = model.GravityScaleAtStart;
-            animator.SetBool("Climbing", false);
+            animator.SetBool(model.ClimbBoolName, false);
             return;
         }
 
@@ -68,8 +73,13 @@ public class PlayerPresenter : MonoBehaviour
         rigidBody.velocity = climbVelocity;
         rigidBody.gravityScale = 0f;
 
+        PlayerClimbAnimation();
+    }
+
+    private void PlayerClimbAnimation()
+    {
         bool playerHasSpeedY = rigidBody.velocity.y > Mathf.Epsilon;
-        animator.SetBool("Climbing", playerHasSpeedY);
+        animator.SetBool(model.ClimbBoolName, playerHasSpeedY);
     }
 
     private void ProcessPlayerDeath()
@@ -97,14 +107,15 @@ public class PlayerPresenter : MonoBehaviour
 
         onPlayerDeath?.Invoke();
 
-        animator.SetTrigger("Die");
+        animator.SetTrigger(model.DeadTriggerName);
     }
 
+    // called via animation event
     private void ProcessShooting()
     {
         if (model.ShootingAnimationEnd)
         {
-            animator.SetBool("Shooting", false);
+            animator.SetBool(model.ShootBoolName, false);
             model.ShootingAnimationEnd = false;
         }
     }
@@ -125,7 +136,7 @@ public class PlayerPresenter : MonoBehaviour
             if(model.CanJump)
             {
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, model.JumpSpeed);
-                animator.SetBool("Jumping", true);
+                animator.SetBool(model.JumpBoolName, true);
                 model.CanJump = false;
             }
         }
@@ -137,10 +148,11 @@ public class PlayerPresenter : MonoBehaviour
 
         if(value.isPressed)
         {
-            animator.SetBool("Shooting", true);
+            animator.SetBool(model.ShootBoolName, true);
         }
     }
 
+    // called via animaiton event
     public void ShootingAnimationEnded()
     {
         model.ShootingAnimationEnd = true;
@@ -150,7 +162,7 @@ public class PlayerPresenter : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<EnemyPresenter>())
         {
-            animator.SetBool("Hurt", true);
+            animator.SetBool(model.HurtBoolName, true);
             rigidBody.velocity = model.pushVelocity;
             AudioService.Instance.PlaySound(SoundType.Hurt);
             DecreaseLives();
@@ -158,13 +170,19 @@ public class PlayerPresenter : MonoBehaviour
 
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.PlatformLayer))
         {
-            animator.SetBool("Jumping", false);
+            animator.SetBool(model.JumpBoolName, false);
             model.CanJump = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        animator.SetBool("Hurt", false);
+        animator.SetBool(model.HurtBoolName, false);
+    }
+
+    public void PlayFootStepSound()
+    {
+        if(model.CanJump)
+            AudioService.Instance.PlaySound(SoundType.Footsteps);
     }
 }

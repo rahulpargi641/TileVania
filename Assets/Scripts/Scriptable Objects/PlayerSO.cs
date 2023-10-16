@@ -16,12 +16,13 @@ public class PlayerSO : ScriptableObject
 
 
     [Header("Animation Names")]
-    public string idleAnimName = "Idle";
-    public string runAnimName = "Run";
-    public string jumpAnimName = "Jump";
-    public string climbAnimName = "Climb";
-    public string shootAnimName = "Shoot";
-    public string deadAnimName = "Dead";
+    public string idleBoolName = "Idling";
+    public string runBoolName = "Running";
+    public string jumpBoolName = "Jumping";
+    public string climbBoolName = "Climbing";
+    public string shootBoolName = "Shooting";
+    public string hurtBoolName = "Hurt";
+    public string deadTriggerName = "Die";
 
     //[Header("Properties")]
     //public ItemType itemType; // Enum to specify the item type (e.g., Consumable, Weapon, Armor, etc.).

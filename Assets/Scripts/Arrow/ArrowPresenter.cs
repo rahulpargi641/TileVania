@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class ArrowPresenter : MonoBehaviour
 {
+    public static event Action<EnemyPresenter> onArrowHit;
+
     private Rigidbody2D rigidbody;
 
     private ArrowModel model;
@@ -25,9 +28,12 @@ public class ArrowPresenter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyPresenter enemy = collision.GetComponent<EnemyPresenter>();
-        if (enemy)
-            Destroy(enemy.gameObject);  // Notify enemy dead and send back to pool
+        EnemyPresenter enemyPresenter = collision.GetComponent<EnemyPresenter>();
+        if (enemyPresenter)
+        {
+            onArrowHit?.Invoke(enemyPresenter);
+            AudioService.Instance.PlaySound(SoundType.Death);
+        }
 
         ArrowService.Instance.ReturnArrowToPool(this);  
     }

@@ -12,6 +12,14 @@ public class PlayerModel
     public bool ShootingAnimationEnd { get; set; } = false;
     public float GravityScaleAtStart { get; set; }
 
+    public string idleBoolName { get; private set; }
+    public string RunBoolName { get; private set; }
+    public string JumpBoolName { get; private set; }
+    public string ClimbBoolName { get; private set; }
+    public string ShootBoolName { get; private set; }
+    public string HurtBoolName { get; private set; }
+    public string DeadTriggerName { get; private set; }
+
     private PlayerSO playerSO;
 
     public PlayerModel(PlayerSO playerSO)
@@ -24,5 +32,13 @@ public class PlayerModel
         pushVelocity = playerSO.pushVelocity;
 
         Lives = playerSO.lives;
+
+        idleBoolName = playerSO.idleBoolName;
+        RunBoolName = playerSO.runBoolName;
+        JumpBoolName = playerSO.jumpBoolName;
+        ClimbBoolName = playerSO.climbBoolName;
+        ShootBoolName = playerSO.shootBoolName;
+        HurtBoolName = playerSO.hurtBoolName;
+        DeadTriggerName = playerSO.deadTriggerName;
     }
 }

@@ -1,9 +1,16 @@
 
+// Enum to specify different sound types.
 public enum SoundType
 {
+    Footsteps,
     CoinPickup,
     Hurt,
-    Death
+    Death,
+    ArrowShooting,
+    BouncyJump,
+
+    ButtonClick,
+    BackgroundMusic,
 }
 
 // Enum to specify different item types.

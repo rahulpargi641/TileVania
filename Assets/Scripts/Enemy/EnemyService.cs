@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyService : MonoSingletonGeneric<EnemyService>
+public class EnemyService : MonoSingletonGeneric<EnemyService>, IDamageable
 {
     [SerializeField] EnemySO enemySO;
 
@@ -13,6 +13,13 @@ public class EnemyService : MonoSingletonGeneric<EnemyService>
     {
         enemyPresenters = new List<EnemyPresenter>();
         enemyPool = new EnemyPool();
+
+        ArrowPresenter.onArrowHit += ReturnEnemyToPool;
+    }
+
+    private void OnDestroy()
+    {
+        ArrowPresenter.onArrowHit -= ReturnEnemyToPool;
     }
 
     public void SpawnEnemy(Vector3 spawnPointPos)
