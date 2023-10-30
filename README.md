@@ -69,7 +69,7 @@
     - Custom input actions like OnJump() and OnFire() have been defined for jumping and shooting.
 
 #### Level Design:
-
+    - Designed strategic level independently using provided assets.
     - For rapid level design, Unity's Tilemap was utilized, enabling expedited level creation by 
       painting tiles and specifying tilemap rules.
     - Created multiple layers, including platform, Enemy, Obstacle, Water, Bouncy, and Player, to 
