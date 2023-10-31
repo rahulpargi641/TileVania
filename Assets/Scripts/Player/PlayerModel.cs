@@ -8,7 +8,7 @@ public class PlayerModel
     public Vector2 pushVelocity { get; private set; }
     public int Lives { get; set; }
     public bool IsAlive { get;  set; } = true;
-    public bool CanJump { get; set; } = true;
+    public bool IsGrounded { get; set; } = true;
     public bool ShootingAnimationEnd { get; set; } = false;
     public float GravityScaleAtStart { get; set; }
 

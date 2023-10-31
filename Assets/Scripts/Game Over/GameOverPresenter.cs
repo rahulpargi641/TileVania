@@ -18,17 +18,6 @@ public class GameOverPresenter : MonoBehaviour
         quitButton.onClick.AddListener(QuitGame);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        PlayerPresenter.onPlayerDeath += GameOver;
-    }
-
-    private void OnDestroy()
-    {
-        PlayerPresenter.onPlayerDeath -= GameOver;
-    }
-
     private void PlayGame()
     {
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
@@ -40,18 +29,13 @@ public class GameOverPresenter : MonoBehaviour
 
     private void QuitGame()
     {
-        Application.Quit();
-    }
-
-    private void GameOver()
-    {
-        StartCoroutine(LoadGameOverScene());
-    }
-
-    private IEnumerator LoadGameOverScene()
-    {
-        yield return new WaitForSecondsRealtime(model.LevelLoadDelay);
-
-        SceneManager.LoadScene(model.GameOverSceneName);
+        if (Application.isPlaying)
+        {
+            Application.Quit(); // Quit the game directly
+        }
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
+#endif
+        AudioService.Instance.PlaySound(SoundType.ButtonClick);
     }
 }

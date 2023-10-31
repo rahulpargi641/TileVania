@@ -19,6 +19,7 @@ public class LevelCompletePresenter : MonoBehaviour
 
     private IEnumerator LoadNextLevel()
     {
+        AudioService.Instance.PlaySound(SoundType.LevelComplete);
         yield return new WaitForSecondsRealtime(model.LevelLoadDelay);
 
         SceneManager.LoadScene(model.GameCompleteSceneName);

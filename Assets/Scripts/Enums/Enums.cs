@@ -5,12 +5,14 @@ public enum SoundType
     Footsteps,
     CoinPickup,
     Hurt,
-    Death,
     ArrowShooting,
+    Jump,
     BouncyJump,
+    EnemyDeath,
 
     ButtonClick,
     BackgroundMusic,
+    LevelComplete
 }
 
 // Enum to specify different item types.

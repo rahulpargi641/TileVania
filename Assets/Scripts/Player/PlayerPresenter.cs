@@ -108,6 +108,7 @@ public class PlayerPresenter : MonoBehaviour
         onPlayerDeath?.Invoke();
 
         animator.SetTrigger(model.DeadTriggerName);
+        AudioService.Instance.PlaySound(SoundType.Hurt);
     }
 
     // called via animation event
@@ -133,11 +134,12 @@ public class PlayerPresenter : MonoBehaviour
 
         if (value.isPressed)
         {
-            if(model.CanJump)
+            if(model.IsGrounded)
             {
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, model.JumpSpeed);
                 animator.SetBool(model.JumpBoolName, true);
-                model.CanJump = false;
+                model.IsGrounded = false;
+                AudioService.Instance.PlaySound(SoundType.Jump);
             }
         }
     }
@@ -171,7 +173,7 @@ public class PlayerPresenter : MonoBehaviour
         if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.PlatformLayer))
         {
             animator.SetBool(model.JumpBoolName, false);
-            model.CanJump = true;
+            model.IsGrounded = true;
         }
     }
 
@@ -182,7 +184,7 @@ public class PlayerPresenter : MonoBehaviour
 
     public void PlayFootStepSound()
     {
-        if(model.CanJump)
+        if(model.IsGrounded)
             AudioService.Instance.PlaySound(SoundType.Footsteps);
     }
 }

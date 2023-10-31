@@ -32,7 +32,7 @@ public class ArrowPresenter : MonoBehaviour
         if (enemyPresenter)
         {
             onArrowHit?.Invoke(enemyPresenter);
-            AudioService.Instance.PlaySound(SoundType.Death);
+            AudioService.Instance.PlaySound(SoundType.EnemyDeath);
         }
 
         ArrowService.Instance.ReturnArrowToPool(this);  
