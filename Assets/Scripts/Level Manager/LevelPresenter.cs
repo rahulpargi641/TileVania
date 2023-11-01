@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,13 +8,15 @@ public class LevelPresenter : MonoBehaviour
     [SerializeField] GameObject pauseScreen;
     [SerializeField] Button restartButton;
     [SerializeField] Button quitButton;
-    [SerializeField] string GameOverSceneName = "GameOver";
-    [SerializeField] float LevelLoadDelay = 2f;
 
     private bool isPaused = false;
 
+    private LevelModel model;
+
     private void Awake()
     {
+        model = new LevelModel();
+
         restartButton.onClick.AddListener(RestartGame);
         quitButton.onClick.AddListener(QuitGame);
         pauseScreen.SetActive(false);
@@ -25,6 +26,8 @@ public class LevelPresenter : MonoBehaviour
     void Start()
     {
         PlayerPresenter.onPlayerDeath += GameOver;
+
+        //AudioService.Instance.PlaySound(SoundType.BackgroundMusic);
     }
 
     private void OnDestroy()
@@ -47,7 +50,7 @@ public class LevelPresenter : MonoBehaviour
         }
     }
 
-    void PauseGame()
+    private void PauseGame()
     {
         isPaused = true;
         pauseScreen.SetActive(true);
@@ -57,7 +60,7 @@ public class LevelPresenter : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    void ResumeGame()
+    private void ResumeGame()
     {
         isPaused = false;
         pauseScreen.SetActive(false);
@@ -69,8 +72,7 @@ public class LevelPresenter : MonoBehaviour
 
     private void RestartGame()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void QuitGame()
@@ -92,9 +94,10 @@ public class LevelPresenter : MonoBehaviour
 
     private IEnumerator LoadGameOverScene()
     {
-        yield return new WaitForSecondsRealtime(LevelLoadDelay);
+        yield return new WaitForSecondsRealtime(model.LevelLoadDelay);
 
-        SceneManager.LoadScene(GameOverSceneName);
+        int gameOverSceneIndex = SceneManager.sceneCountInBuildSettings - 1;
+        SceneManager.LoadScene(gameOverSceneIndex);
     }
 }
 

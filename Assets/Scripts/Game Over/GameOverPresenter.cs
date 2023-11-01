@@ -1,11 +1,11 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverPresenter : MonoBehaviour
 {
-    [SerializeField] Button startButton;
+    [SerializeField] Button playAgainButton;
+    [SerializeField] Button mainMenuButton;
     [SerializeField] Button quitButton;
 
     private GameOverModel model;
@@ -14,17 +14,28 @@ public class GameOverPresenter : MonoBehaviour
     {
         model = new GameOverModel();
 
-        startButton.onClick.AddListener(PlayGame);
+        playAgainButton.onClick.AddListener(PlayAgain);
+        mainMenuButton.onClick.AddListener(MainMenu);
         quitButton.onClick.AddListener(QuitGame);
     }
 
-    private void PlayGame()
+    private void Start()
     {
-        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
-        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
-            nextSceneIndex = 0;
+        AudioService.Instance.StopSound(SoundType.BackgroundMusic);
+    }
 
-        SceneManager.LoadScene(nextSceneIndex);
+    private void PlayAgain()
+    {
+        int prevSceneIndex = SceneManager.GetActiveScene().buildIndex - 2;
+        if (prevSceneIndex < 1)
+            prevSceneIndex = 1;
+
+        SceneManager.LoadScene(prevSceneIndex);
+    }
+
+    private void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void QuitGame()

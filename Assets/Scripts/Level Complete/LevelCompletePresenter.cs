@@ -1,27 +1,45 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelCompletePresenter : MonoBehaviour
 {
-    private LevelCompleteModel model;
+    [SerializeField] Button playAgainButton;
+    [SerializeField] Button quitButton;
+
+    private GameOverModel model;
 
     private void Awake()
     {
-        model = new LevelCompleteModel();
+        model = new GameOverModel();
+
+        playAgainButton.onClick.AddListener(PlayAgain);
+        quitButton.onClick.AddListener(QuitGame);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Start()
     {
-        if(collision.GetComponent<PlayerPresenter>())
-            StartCoroutine(LoadNextLevel());
+        AudioService.Instance.StopSound(SoundType.BackgroundMusic);
     }
 
-    private IEnumerator LoadNextLevel()
+    private void PlayAgain()
     {
-        AudioService.Instance.PlaySound(SoundType.LevelComplete);
-        yield return new WaitForSecondsRealtime(model.LevelLoadDelay);
+        int prevSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+        if (prevSceneIndex < 1)
+            prevSceneIndex = 1;
 
-        SceneManager.LoadScene(model.GameCompleteSceneName);
+        SceneManager.LoadScene(prevSceneIndex);
+    }
+
+    private void QuitGame()
+    {
+        if (Application.isPlaying)
+        {
+            Application.Quit(); // Quit the game directly
+        }
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
+#endif
+        AudioService.Instance.PlaySound(SoundType.ButtonClick);
     }
 }
