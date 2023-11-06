@@ -29,8 +29,18 @@
     - Pause screen with options to resume and quit the game.
     
 ### Screenshots
+   ![StartMenu](./Screenshots/StartMenu.png)
+   ![GingerAndGoober](./Screenshots/GingerAndGoober.png)
+   ![JumpOverEnemy](./Screenshots/JumpOverEnemy.png)
+   ![GingerJump](./Screenshots/GingerJump.png)
+   ![ClimbingLadder](./Screenshots/ClimbingLadder.png)
+   ![ShootingGoober](./Screenshots/ShootingGoober.png)
+   ![MashroomJump](./Screenshots/MashroomJump.png)
+   ![BouncyMashroom](./Screenshots/BouncyMashroom.png)
 
-   (Insert screenshots)
+
+
+
   
 ### Code Structure and Game Design
 #### Code Structure
@@ -92,9 +102,10 @@
 
 ### Gameplay Demonstration
 
-    For a visual demonstration of the gameplay, watch video on YouTube.
+    For a visual demonstration of the gameplay, watch video on YouTube:
+   [Youtube video link](https://youtu.be/IphgE8X3xno)
 
 ### Play the Game
 
-    To experience the game firsthand, play it directly by following this playable link.
-   - https://rahul-pargi.itch.io/tilevania
+    To experience the game firsthand, play it directly by following this playable link:
+   [Play in browser(WebGl)](https://rahul-pargi.itch.io/tilevania)
