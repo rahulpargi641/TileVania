@@ -3,13 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelPresenter : MonoBehaviour
+public class LevelView : MonoBehaviour
 {
     [SerializeField] GameObject pauseScreen;
     [SerializeField] Button restartButton;
     [SerializeField] Button quitButton;
-
-    private bool isPaused = false;
 
     private LevelModel model;
 
@@ -25,49 +23,37 @@ public class LevelPresenter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPresenter.onPlayerDeath += GameOver;
-
-        //AudioService.Instance.PlaySound(SoundType.BackgroundMusic);
+        PlayerView.onPlayerDeath += GameOver;
     }
 
     private void OnDestroy()
     {
-        PlayerPresenter.onPlayerDeath -= GameOver;
+        PlayerView.onPlayerDeath -= GameOver;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
+            if (model.IsPaused)
                 ResumeGame();
-            }
             else
-            {
                 PauseGame();
-            }
         }
     }
 
     private void PauseGame()
     {
-        isPaused = true;
+        model.IsPaused = true;
         pauseScreen.SetActive(true);
         Time.timeScale = 0; // Pause time
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     private void ResumeGame()
     {
-        isPaused = false;
+        model.IsPaused = false;
         pauseScreen.SetActive(false);
         Time.timeScale = 1; // Resume time
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void RestartGame()
@@ -77,10 +63,8 @@ public class LevelPresenter : MonoBehaviour
 
     private void QuitGame()
     {
-        if (Application.isPlaying)
-        {
-            Application.Quit(); // Quit the game directly
-        }
+        Application.Quit(); 
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
 #endif

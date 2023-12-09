@@ -2,18 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameOverPresenter : MonoBehaviour
+public class GameOver : MonoBehaviour
 {
     [SerializeField] Button playAgainButton;
     [SerializeField] Button mainMenuButton;
     [SerializeField] Button quitButton;
 
-    private GameOverModel model;
-
     private void Awake()
     {
-        model = new GameOverModel();
-
         playAgainButton.onClick.AddListener(PlayAgain);
         mainMenuButton.onClick.AddListener(MainMenu);
         quitButton.onClick.AddListener(QuitGame);

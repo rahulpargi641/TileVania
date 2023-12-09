@@ -2,17 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelCompletePresenter : MonoBehaviour
+public class LevelComplete : MonoBehaviour
 {
     [SerializeField] Button playAgainButton;
     [SerializeField] Button quitButton;
 
-    private GameOverModel model;
-
     private void Awake()
     {
-        model = new GameOverModel();
-
         playAgainButton.onClick.AddListener(PlayAgain);
         quitButton.onClick.AddListener(QuitGame);
     }
@@ -33,10 +29,8 @@ public class LevelCompletePresenter : MonoBehaviour
 
     private void QuitGame()
     {
-        if (Application.isPlaying)
-        {
-            Application.Quit(); // Quit the game directly
-        }
+        Application.Quit(); 
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
 #endif

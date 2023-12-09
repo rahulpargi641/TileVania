@@ -2,14 +2,9 @@
 public class ArrowModel
 {
     public float ArrowSpeed { get; private set; }
-    public float XSpeed { get; set; }
 
-    private ItemSO arrowConfig;
-
-    public ArrowModel(ItemSO arrowConfig)
+    public ArrowModel(ArrowSO arrowSO)
     {
-        this.arrowConfig = arrowConfig;
-
-        ArrowSpeed = arrowConfig.speed;
+        ArrowSpeed = arrowSO.speed;
     }
 }

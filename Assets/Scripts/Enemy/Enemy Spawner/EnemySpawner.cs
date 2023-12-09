@@ -1,28 +1,25 @@
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour // Multiple EnemySpawner exists through out the level in different areas.
 {
-    [SerializeField] Transform[] spawnPoints;
+    [SerializeField] Transform[] spawnPoints; // Spawn points for the enemies, when player enters the EnemySpawner trigger, all the enemies in that area will be spawned.
 
-    private bool areEnemiesSpawned = false;
+    private bool areEnemiesSpawned = false; // For spawning enemies only once when player enters the EnemySpwner trigger for the first time. if player enters the trigger second time, it will not spawn the enemies
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<PlayerPresenter>())
-        {
+        if (collision.GetComponent<PlayerView>())
             SpawnEnemies();
-        }
     }
 
     public void SpawnEnemies()
     {
         if (areEnemiesSpawned) return;
 
-        areEnemiesSpawned = true;
-
-        foreach (Transform spawnPoint in spawnPoints)
-        {
+        foreach (Transform spawnPoint in spawnPoints) // Performance difference is negligible between for and foreach. since foreach provides more readability so its good idea to use foreach
+                                                      //  where you don't need to access the elements by index.
             EnemyService.Instance.SpawnEnemy(spawnPoint.position);
-        }
+
+        areEnemiesSpawned = true;
     }
 }

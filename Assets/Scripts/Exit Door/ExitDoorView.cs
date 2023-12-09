@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ExitDoorPresenter : MonoBehaviour
+public class ExitDoorView : MonoBehaviour
 {
     private ExitDoorModel model;
 
@@ -13,7 +13,7 @@ public class ExitDoorPresenter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<PlayerPresenter>())
+        if(collision.GetComponent<PlayerView>())
             StartCoroutine(LoadNextLevel());
     }
 

@@ -14,11 +14,3 @@ public enum SoundType
     BackgroundMusic,
     LevelComplete
 }
-
-// Enum to specify different item types.
-public enum ItemType
-{
-    Consumable,
-    Weapon,
-    Armor
-}

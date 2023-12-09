@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public class EnemyPool : ObjectPoolGeneric<EnemyPresenter>
+public class EnemyPool : ObjectPoolGeneric<EnemyView>
 {
-    private EnemyPresenter presenter;
+    private EnemyView enemyPrefab;
 
-    public EnemyPresenter GetEnemy(EnemyPresenter presenter)
+    public EnemyView GetEnemy(EnemyView enemyPrefab)
     {
-        this.presenter = presenter;
+        this.enemyPrefab = enemyPrefab;
 
         return GetItemFromPool();
     }
 
-    protected override EnemyPresenter CreateItem()
+    protected override EnemyView CreateItem()
     {
-        EnemyPresenter arrowPresenter = Object.Instantiate(presenter);
+        EnemyView arrowView = Object.Instantiate(enemyPrefab);
 
-        return arrowPresenter;
+        return arrowView;
     }
 }

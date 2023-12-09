@@ -20,12 +20,8 @@ public class PlayerModel
     public string HurtBoolName { get; private set; }
     public string DeadTriggerName { get; private set; }
 
-    private PlayerSO playerSO;
-
     public PlayerModel(PlayerSO playerSO)
     {
-        this.playerSO = playerSO;
-
         RunSpeed = playerSO.runSpeed;
         JumpSpeed = playerSO.jumpSpeed;
         ClimbSpeed = playerSO.climbSpeed;

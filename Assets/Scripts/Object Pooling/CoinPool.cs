@@ -1,19 +1,19 @@
 using UnityEngine;
 
-public class CoinPool : ObjectPoolGeneric<CoinPresenter>
+public class CoinPool : ObjectPoolGeneric<CoinView>
 {
-    private CoinPresenter presenter;
+    private CoinView coinPrefab;
 
-    public CoinPresenter GetCoin(CoinPresenter presenter)
+    public CoinView GetCoin(CoinView coinPrefab)
     {
-        this.presenter = presenter;
+        this.coinPrefab = coinPrefab;
 
         return GetItemFromPool();
     }
 
-    protected override CoinPresenter CreateItem()
+    protected override CoinView CreateItem()
     {
-        CoinPresenter coinPresenter = Object.Instantiate(presenter);
-        return coinPresenter;
+        CoinView coinView = Object.Instantiate(coinPrefab);
+        return coinView;
     }
 }

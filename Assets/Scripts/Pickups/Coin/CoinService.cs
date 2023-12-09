@@ -10,21 +10,26 @@ public class CoinService : MonoSingletonGeneric<CoinService>
     void Start()
     {
         coinPool = new CoinPool();
+
+        CoinView.onCoinPickedUp += ReturnCoinToPool;
+    }
+
+    private void OnDestroy()
+    {
+        CoinView.onCoinPickedUp -= ReturnCoinToPool;
     }
 
     public void SpawnCoin(Vector2 spawnPointPos)
     {
-        CoinModel coinModel = new CoinModel(coinSO);
-
-        CoinPresenter coinPresenter = coinPool.GetCoin(coinSO.coinPresenter);
-        coinPresenter.InitializeModel(coinModel);
+        CoinView coinPresenter = coinPool.GetCoin(coinSO.coinView);
+        coinPresenter.InitializeModel(coinSO);
         coinPresenter.SetTransform(spawnPointPos);
         coinPresenter.EnableCoin();
     }
 
-    public void ReturnCoinToPool(CoinPresenter coinPresenter)
+    private void ReturnCoinToPool(CoinView coinView)
     {
-        coinPresenter.DisableCoin();
-        coinPool.ReturnItem(coinPresenter);
+        coinView.DisableCoin();
+        coinPool.ReturnItem(coinView);
     }
 }

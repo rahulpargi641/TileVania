@@ -1,6 +1,5 @@
 
 public interface IDamageable
 {
-    void TakeDamage(float damage)
-    {}
+    abstract void TakeDamage(float damage);
 }

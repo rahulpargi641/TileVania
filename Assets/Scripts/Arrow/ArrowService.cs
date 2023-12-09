@@ -3,27 +3,33 @@ using UnityEngine;
 public class ArrowService : MonoSingletonGeneric<ArrowService>
 {
     [SerializeField] ArrowSO arrowSO;
+
     private ArrowPool arrowPool;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         arrowPool = new ArrowPool();
+
+        ArrowView.onArrowCollided += ReturnArrowToPool;
+    }
+
+    private void OnDestroy()
+    {
+        ArrowView.onArrowCollided -= ReturnArrowToPool;
     }
 
     public void SpawnArrow(Vector2 spawnPointPos, Vector2 spawnPointScale)
     {
-        ArrowModel arrowModel = new ArrowModel(arrowSO);
-
-        ArrowPresenter arrowPresenter = arrowPool.GetArrow(arrowSO.arrowPresenter);
-        arrowPresenter.InitializeModel(arrowModel);
-        arrowPresenter.SetTransform(spawnPointPos, spawnPointScale);
-        arrowPresenter.EnableArrow();
+        ArrowView arrowView = arrowPool.GetArrow(arrowSO.arrowPrefab);
+        arrowView.InitializeModel(arrowSO);
+        arrowView.SetTransform(spawnPointPos, spawnPointScale);
+        arrowView.EnableArrow();
     }
 
-    public void ReturnArrowToPool(ArrowPresenter arrowPresenter)
+    private void ReturnArrowToPool(ArrowView arrowView)
     {
-        arrowPresenter.DisableArrow();
-        arrowPool.ReturnItem(arrowPresenter);
+        arrowView.DisableArrow();
+        arrowPool.ReturnItem(arrowView);
     }
 }

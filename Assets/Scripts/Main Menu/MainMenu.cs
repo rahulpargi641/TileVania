@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuPresenter : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
     [SerializeField] Button startButton;
     [SerializeField] Button quitButton;
@@ -22,9 +22,7 @@ public class MainMenuPresenter : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             HideInstructionsScreen();
-        }
     }
 
     private void PlayGame()
@@ -55,9 +53,7 @@ public class MainMenuPresenter : MonoBehaviour
     private void HideInstructionsScreen()
     {
         if (instructionsScreen.activeSelf)
-        {
             instructionsScreen.SetActive(false);
-        }
     }
 
     private void PlayButtonClickSound()

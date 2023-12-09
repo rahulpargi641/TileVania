@@ -12,9 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3fc60c8ce0385b479c457d6339408b7, type: 3}
   m_Name: Arrow
   m_EditorClassIdentifier: 
-  name: 
-  itemID: 0
-  itemType: 1
-  value: 0
   speed: 20
-  arrowPresenter: {fileID: 8596134426193193828, guid: 8718d371918726a42a8d4394c1b458e4, type: 3}
+  arrowPrefab: {fileID: 8596134426193193828, guid: 8718d371918726a42a8d4394c1b458e4, type: 3}

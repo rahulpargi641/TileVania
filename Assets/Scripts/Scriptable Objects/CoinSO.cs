@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Coin", menuName = "ScriptableObjects/Items/Coin")]
-public class CoinSO : ItemSO
+public class CoinSO : ScriptableObject
 {
-    public CoinPresenter coinPresenter;
-    public int coinPointsGain = 10;
+    public int pointsGain = 10;
+    public CoinView coinView;
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerService : MonoSingletonGeneric<PlayerService>
 {
     [SerializeField] PlayerSO playerSO;
-    [SerializeField] PlayerPresenter playerPresenter;
+    [SerializeField] PlayerView playerView;
 
     protected override void Awake()
     {
@@ -12,10 +12,9 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
         SpawnPlayer();
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayer() // Game Service will spawn the player in future, maybe you want to spawn the player at dying location everytime player dies until you run of lives.
     {
-        PlayerModel playerModel = new PlayerModel(playerSO);
-        //playerPresenter = Instantiate(playerSO.playerPresenter, spawnPoint.position, spawnPoint.rotation);        
-        playerPresenter.InitializeModel(playerModel);
+        // playerView = Instantiate(playerSO.playerView, spawnPoint.position, spawnPoint.rotation);        
+        playerView.InitializeModel(playerSO);
     }
 }

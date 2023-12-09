@@ -1,24 +1,25 @@
 using System;
 using UnityEngine;
 
-public class CoinPresenter : MonoBehaviour
+public class CoinView : MonoBehaviour
 {
     public static event Action<int> onCoinPickup;
+    public static event Action<CoinView> onCoinPickedUp;
 
     private CoinModel model;
 
-    public void InitializeModel(CoinModel model)
+    public void InitializeModel(CoinSO coinSO)
     {
-        this.model = model;
+        model = new CoinModel(coinSO);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<PlayerPresenter>())
+        if (collision.GetComponent<PlayerView>())
         {
-            onCoinPickup?.Invoke(model.coinPointsGain);
+            onCoinPickup?.Invoke(model.pointsGain);
             AudioService.Instance.PlaySound(SoundType.CoinPickup);
-            CoinService.Instance.ReturnCoinToPool(this);
+            onCoinPickedUp?.Invoke(this);
         }
     }
 

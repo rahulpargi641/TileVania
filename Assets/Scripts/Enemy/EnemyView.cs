@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class EnemyPresenter : MonoBehaviour
+public class EnemyView : MonoBehaviour
 {
     private Rigidbody2D rigidBody2D;
 
     private EnemyModel model;
 
-    public void InitialzeModel(EnemyModel model)
+    public void InitialzeModel(EnemySO enemySO)
     {
-        this.model = model;
+        model = new EnemyModel(enemySO);
     }
 
     private void Awake()

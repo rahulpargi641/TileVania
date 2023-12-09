@@ -2,8 +2,16 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerPresenter : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Animator))]
+public class PlayerView : MonoBehaviour // If I shift all the code in the Controller, the functions in View will be empty with calling functions in the Controller. Why there's need to be unnecessary function calls?  while I can simply write code here.  what is the use of View. Please Explain in detail.
+                                        // I don't like MVC in unity Becuase in the view you are doing nothing. Unity already handles rendering of UI elements only thing you are doing in the view is taking references and updating them. In the Web devoplement MVC works well because you are actually writing code for UI related things by using CSS.
+                                        // In unity MVC doesn't align well, it leads to inconsistent code. sometime you don't have controller logic so you don't create Controller. Most of the You have Controoler logic and your view is empty making calls in the Controller.
+                                        // Please explain why I should be using MVC instead of MVP. 
 {
+    [SerializeField] Transform arrowSpawnPoint;
+
     public static event Action<int> onPlayerLivesChange;
     public static event Action onPlayerDeath;
 
@@ -12,6 +20,7 @@ public class PlayerPresenter : MonoBehaviour
     private Animator animator;
 
     private Vector2 moveInput;
+
     private PlayerModel model;
 
     private void Awake()
@@ -37,9 +46,9 @@ public class PlayerPresenter : MonoBehaviour
         ProcessPlayerDeath();
     }
 
-    public void InitializeModel(PlayerModel model)
+    public void InitializeModel(PlayerSO playerSO)
     {
-        this.model = model;
+        model = new PlayerModel(playerSO);
     }
 
     private void ProcessRunning()
@@ -62,7 +71,7 @@ public class PlayerPresenter : MonoBehaviour
 
     void ProcessClimbingLadder()
     {
-        if (!bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.ClimbingLayer))
+        if (!bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.ClimbingLayer))
         {
             rigidBody.gravityScale = model.GravityScaleAtStart;
             animator.SetBool(model.ClimbBoolName, false);
@@ -84,7 +93,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private void ProcessPlayerDeath()
     {
-        if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.WaterLayer))
+        if (bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.WaterLayer))
         {
             PlayerDead();
         }
@@ -121,6 +130,7 @@ public class PlayerPresenter : MonoBehaviour
         }
     }
 
+    // Input System message
     void OnMove(InputValue value)
     {
         if (!model.IsAlive) return;
@@ -128,6 +138,7 @@ public class PlayerPresenter : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
+    // Input System message
     void OnJump(InputValue value)
     {
         if (!model.IsAlive) return;
@@ -144,6 +155,7 @@ public class PlayerPresenter : MonoBehaviour
         }
     }
 
+    // Input System message
     void OnFire(InputValue value)
     {
         if (!model.IsAlive) return;
@@ -154,6 +166,13 @@ public class PlayerPresenter : MonoBehaviour
         }
     }
 
+    // called via animation event
+    public void ShootArrow()  
+    {
+        ArrowService.Instance.SpawnArrow(arrowSpawnPoint.position, transform.localScale);
+        AudioService.Instance.PlaySound(SoundType.ArrowShooting);
+    }
+
     // called via animaiton event
     public void ShootingAnimationEnded()
     {
@@ -162,7 +181,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<EnemyPresenter>())
+        if (collision.gameObject.GetComponent<EnemyView>())
         {
             animator.SetBool(model.HurtBoolName, true);
             rigidBody.velocity = model.pushVelocity;
@@ -170,7 +189,7 @@ public class PlayerPresenter : MonoBehaviour
             DecreaseLives();
         }
 
-        if (bodyCapsuleCollider.IsTouchingLayers(LayersService.Instance.PlatformLayer))
+        if (bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.PlatformLayer))
         {
             animator.SetBool(model.JumpBoolName, false);
             model.IsGrounded = true;

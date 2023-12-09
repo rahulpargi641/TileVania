@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public class ArrowPool : ObjectPoolGeneric<ArrowPresenter>
+public class ArrowPool : ObjectPoolGeneric<ArrowView>
 {
-    private ArrowPresenter presenter;
+    private ArrowView arrowPrefab;
 
-    public ArrowPresenter GetArrow(ArrowPresenter presenter)
+    public ArrowView GetArrow(ArrowView arrowPrefab)
     {
-        this.presenter = presenter;
+        this.arrowPrefab = arrowPrefab;
 
         return GetItemFromPool();
     }
 
-    protected override ArrowPresenter CreateItem()
+    protected override ArrowView CreateItem()
     {
-        ArrowPresenter arrowPresenter = Object.Instantiate(presenter);
+        ArrowView arrowView = Object.Instantiate(arrowPrefab);
 
-        return arrowPresenter;
+        return arrowView;
     }
 }

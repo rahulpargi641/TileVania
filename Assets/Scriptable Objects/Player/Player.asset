@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   name: 
-  player: {fileID: 0}
   lives: 3
+  playerView: {fileID: 2698390700066553773, guid: 92a94b942ff949a44a161f4fdcda2dcd, type: 3}
   runSpeed: 6.5
   jumpSpeed: 9
   climbSpeed: 9
   pushVelocity: {x: 5, y: 7}
-  idleAnimName: Idle
-  runAnimName: Run
-  jumpAnimName: Jump
-  climbAnimName: Climb
-  shootAnimName: Shoot
-  deadAnimName: Dead
+  idleBoolName: Idling
+  runBoolName: Running
+  jumpBoolName: Jumping
+  climbBoolName: Climbing
+  shootBoolName: Shooting
+  hurtBoolName: Hurt
+  deadTriggerName: Die

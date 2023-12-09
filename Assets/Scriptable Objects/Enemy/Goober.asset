@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Goober
   m_EditorClassIdentifier: 
   name: Goober
-  enemyPresenter: {fileID: 8952156789144557141, guid: fea4fa0d30142274187550be2a933fc2, type: 3}
+  enemyView: {fileID: 8952156789144557141, guid: fea4fa0d30142274187550be2a933fc2, type: 3}
   moveSpeed: 1
   deathKick: {x: 5, y: 5}
   idleAnimName: Idle

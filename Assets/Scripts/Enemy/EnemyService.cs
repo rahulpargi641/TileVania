@@ -1,41 +1,35 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyService : MonoSingletonGeneric<EnemyService>, IDamageable
+public class EnemyService : MonoSingletonGeneric<EnemyService>
 {
     [SerializeField] EnemySO enemySO;
 
-    private List<EnemyPresenter> enemyPresenters;
     private EnemyPool enemyPool;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemyPresenters = new List<EnemyPresenter>();
         enemyPool = new EnemyPool();
 
-        ArrowPresenter.onArrowHit += ReturnEnemyToPool;
+        ArrowView.onArrowHit += ReturnEnemyToPool;
     }
 
     private void OnDestroy()
     {
-        ArrowPresenter.onArrowHit -= ReturnEnemyToPool;
+        ArrowView.onArrowHit -= ReturnEnemyToPool;
     }
 
     public void SpawnEnemy(Vector3 spawnPointPos)
     {
-        EnemyModel enemyModel = new EnemyModel(enemySO);
-        EnemyPresenter enemyPresenter = enemyPool.GetEnemy(enemySO.enemyPresenter);
-        enemyPresenter.InitialzeModel(enemyModel);
-        enemyPresenter.SetTransform(spawnPointPos);
-        enemyPresenter.EnableEnemy();
-
-        enemyPresenters.Add(enemyPresenter);
+        EnemyView enemyView = enemyPool.GetEnemy(enemySO.enemyView);
+        enemyView.InitialzeModel(enemySO);
+        enemyView.SetTransform(spawnPointPos);
+        enemyView.EnableEnemy();
     }
 
-    private void ReturnEnemyToPool(EnemyPresenter enemyPresenter)
+    private void ReturnEnemyToPool(EnemyView enemyView)
     {
-        enemyPresenter.DisableEnemy();
-        enemyPool.ReturnItem(enemyPresenter);
+        enemyView.DisableEnemy();
+        enemyPool.ReturnItem(enemyView);
     }
 }
