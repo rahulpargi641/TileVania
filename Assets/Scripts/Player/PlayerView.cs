@@ -5,11 +5,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Animator))]
-public class PlayerView : MonoBehaviour // If I shift all the code in the Controller, the functions in View will be empty with calling functions in the Controller. Why there's need to be unnecessary function calls?  while I can simply write code here.  what is the use of View. Please Explain in detail.
-                                        // I don't like MVC in unity Becuase in the view you are doing nothing. Unity already handles rendering of UI elements only thing you are doing in the view is taking references and updating them. In the Web devoplement MVC works well because you are actually writing code for UI related things by using CSS.
-                                        // In unity MVC doesn't align well, it leads to inconsistent code. sometime you don't have controller logic so you don't create Controller. Most of the You have Controoler logic and your view is empty making calls in the Controller.
-                                        // Please explain why I should be using MVC instead of MVP. 
-{
+public class PlayerView : MonoBehaviour
+{ 
     [SerializeField] Transform arrowSpawnPoint;
 
     public static event Action<int> onPlayerLivesChange;
