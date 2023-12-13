@@ -5,7 +5,7 @@ public class PlayerModel
     public float RunSpeed { get; private set; }
     public float JumpSpeed { get; private set; }
     public float ClimbSpeed { get; private set; }
-    public Vector2 pushVelocity { get; private set; }
+    public Vector2 PushVelocity { get; private set; }
     public int Lives { get; set; }
     public bool IsAlive { get;  set; } = true;
     public bool IsGrounded { get; set; } = true;
@@ -25,7 +25,7 @@ public class PlayerModel
         RunSpeed = playerSO.runSpeed;
         JumpSpeed = playerSO.jumpSpeed;
         ClimbSpeed = playerSO.climbSpeed;
-        pushVelocity = playerSO.pushVelocity;
+        PushVelocity = playerSO.pushVelocity;
 
         Lives = playerSO.lives;
 

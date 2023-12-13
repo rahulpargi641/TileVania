@@ -3,19 +3,18 @@ using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI livesText;
-    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI livesText;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private int currentScore;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         PlayerView.onPlayerLivesChange += UpdatePlayerLivesUI;
         CoinView.onCoinPickup += IncreaseScore;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         PlayerView.onPlayerLivesChange -= UpdatePlayerLivesUI;
         CoinView.onCoinPickup -= IncreaseScore;

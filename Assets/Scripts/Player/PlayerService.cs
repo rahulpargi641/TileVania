@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class PlayerService : MonoSingletonGeneric<PlayerService>
 {
-    [SerializeField] PlayerSO playerSO;
-    [SerializeField] PlayerView playerView;
+    [SerializeField] private PlayerSO playerSO;
+    [SerializeField] private PlayerView playerView;
+
+    private PlayerController playerController;
 
     protected override void Awake()
     {
@@ -12,9 +14,8 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
         SpawnPlayer();
     }
 
-    private void SpawnPlayer() // Game Service will spawn the player in future, maybe you want to spawn the player at dying location everytime player dies until you run of lives.
+    private void SpawnPlayer() // Game Service will spawn the player in future, eg. when you want to keep spawn the player at dying location everytime player dies until you run of lives.
     {
-        // playerView = Instantiate(playerSO.playerView, spawnPoint.position, spawnPoint.rotation);        
-        playerView.InitializeModel(playerSO);
+        playerController = new PlayerController(playerView, playerSO);
     }
 }

@@ -6,201 +6,162 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Animator))]
 public class PlayerView : MonoBehaviour
-{ 
-    [SerializeField] Transform arrowSpawnPoint;
-
+{
     public static event Action<int> onPlayerLivesChange;
     public static event Action onPlayerDeath;
 
-    private Rigidbody2D rigidBody;
-    private CapsuleCollider2D bodyCapsuleCollider;
+    public Rigidbody2D RigidBody { get; private set; }
+    public CapsuleCollider2D BodyCapsuleCollider { get; private set; }
+    public Vector2 MoveInput { get; private set; }
+    public PlayerController Controller { get; set; }
+
+    [SerializeField] private Transform arrowSpawnPoint;
+
     private Animator animator;
-
-    private Vector2 moveInput;
-
-    private PlayerModel model;
 
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        bodyCapsuleCollider = GetComponent<CapsuleCollider2D>();
+        RigidBody = GetComponent<Rigidbody2D>();
+        BodyCapsuleCollider = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
-        model.GravityScaleAtStart = rigidBody.gravityScale;
+        Controller.Model.GravityScaleAtStart = RigidBody.gravityScale;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!model.IsAlive) return;
+        if (!Controller.Model.IsAlive) return;
 
-        ProcessRunning();
-        ProcessClimbingLadder();
-        ProcessShooting();
+        Controller.ProcessPlayerMovement(); // Process Player Running, Jumping and Climbing 
         ProcessPlayerDeath();
     }
 
-    public void InitializeModel(PlayerSO playerSO)
+    public void PlayerRunAnimation()
     {
-        model = new PlayerModel(playerSO);
-    }
-
-    private void ProcessRunning()
-    {
-        Vector2 playerVelocity = new Vector2(moveInput.x * model.RunSpeed, rigidBody.velocity.y);
-        rigidBody.velocity = playerVelocity;
-
-        PlayerRunAnimation();
-    }
-
-    private void PlayerRunAnimation()
-    {
-        bool playerHasSpeedX = Mathf.Abs(rigidBody.velocity.x) > Mathf.Epsilon;
+        bool playerHasSpeedX = Mathf.Abs(RigidBody.velocity.x) > Mathf.Epsilon;
 
         if (playerHasSpeedX)
-            transform.localScale = new Vector2(Mathf.Sign(rigidBody.velocity.x), 1f);
+            transform.localScale = new Vector2(Mathf.Sign(RigidBody.velocity.x), 1f);
 
-        animator.SetBool(model.RunBoolName, playerHasSpeedX);
+        animator.SetBool(Controller.Model.RunBoolName, playerHasSpeedX);
     }
 
-    void ProcessClimbingLadder()
+    public void PlayerClimbAnimation(bool hasSpeedY)
     {
-        if (!bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.ClimbingLayer))
-        {
-            rigidBody.gravityScale = model.GravityScaleAtStart;
-            animator.SetBool(model.ClimbBoolName, false);
-            return;
-        }
-
-        Vector2 climbVelocity = new Vector2(rigidBody.velocity.x, moveInput.y * model.ClimbSpeed);
-        rigidBody.velocity = climbVelocity;
-        rigidBody.gravityScale = 0f;
-
-        PlayerClimbAnimation();
+        animator.SetBool(Controller.Model.ClimbBoolName, hasSpeedY);
     }
 
-    private void PlayerClimbAnimation()
+    public void StopShootingAnimation()
     {
-        bool playerHasSpeedY = rigidBody.velocity.y > Mathf.Epsilon;
-        animator.SetBool(model.ClimbBoolName, playerHasSpeedY);
+        animator.SetBool(Controller.Model.ShootBoolName, false);
     }
 
-    private void ProcessPlayerDeath()
-    {
-        if (bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.HazardLayer) || bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.WaterLayer))
-        {
-            PlayerDead();
-        }
-    }
-
-    private void DecreaseLives()
-    {
-        model.Lives--;
-
-        if(model.Lives >= 0)
-            onPlayerLivesChange?.Invoke(model.Lives);
-
-        if (model.Lives <= 0)
-            PlayerDead();
-    }
-
-    private void PlayerDead()
-    {
-        model.IsAlive = false;
-
-        onPlayerDeath?.Invoke();
-
-        animator.SetTrigger(model.DeadTriggerName);
-        AudioService.Instance.PlaySound(SoundType.Hurt);
-    }
-
-    // called via animation event
-    private void ProcessShooting()
-    {
-        if (model.ShootingAnimationEnd)
-        {
-            animator.SetBool(model.ShootBoolName, false);
-            model.ShootingAnimationEnd = false;
-        }
-    }
-
-    // Input System message
+    // Input System message (custom input action)
     void OnMove(InputValue value)
     {
-        if (!model.IsAlive) return;
+        if (!Controller.Model.IsAlive) return;
 
-        moveInput = value.Get<Vector2>();
+        MoveInput = value.Get<Vector2>();
     }
 
-    // Input System message
+    // Input System message (custom input action)
     void OnJump(InputValue value)
     {
-        if (!model.IsAlive) return;
+        if (!Controller.Model.IsAlive) return;
 
         if (value.isPressed)
         {
-            if(model.IsGrounded)
+            if (Controller.Model.IsGrounded)
             {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, model.JumpSpeed);
-                animator.SetBool(model.JumpBoolName, true);
-                model.IsGrounded = false;
+                RigidBody.velocity = new Vector2(RigidBody.velocity.x, Controller.Model.JumpSpeed);
+
+                animator.SetBool(Controller.Model.JumpBoolName, true);
+
+                Controller.Model.IsGrounded = false;
+
                 AudioService.Instance.PlaySound(SoundType.Jump);
             }
         }
     }
 
-    // Input System message
+    // Input System message (custom input action)
     void OnFire(InputValue value)
     {
-        if (!model.IsAlive) return;
+        if (!Controller.Model.IsAlive) return;
 
-        if(value.isPressed)
+        if (value.isPressed)
         {
-            animator.SetBool(model.ShootBoolName, true);
+            animator.SetBool(Controller.Model.ShootBoolName, true); // start shooting animation
         }
     }
 
     // called via animation event
-    public void ShootArrow()  
+    public void ShootArrow()
     {
         ArrowService.Instance.SpawnArrow(arrowSpawnPoint.position, transform.localScale);
         AudioService.Instance.PlaySound(SoundType.ArrowShooting);
     }
 
-    // called via animaiton event
+    // called via animation event
     public void ShootingAnimationEnded()
     {
-        model.ShootingAnimationEnd = true;
+        Controller.Model.ShootingAnimationEnd = true;
+    }
+
+    private void ProcessPlayerDeath()
+    {
+        if (BodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.HazardLayer) ||
+            BodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.WaterLayer))
+        {
+            Controller.Model.IsAlive = false;
+            onPlayerDeath?.Invoke();
+
+            animator.SetTrigger(Controller.Model.DeadTriggerName);
+            AudioService.Instance.PlaySound(SoundType.Hurt);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<EnemyView>())
         {
-            animator.SetBool(model.HurtBoolName, true);
-            rigidBody.velocity = model.pushVelocity;
-            AudioService.Instance.PlaySound(SoundType.Hurt);
+            animator.SetBool(Controller.Model.HurtBoolName, true);
+
+            RigidBody.velocity = Controller.Model.PushVelocity; // Pushes the player on collision with enemy
+
             DecreaseLives();
+            AudioService.Instance.PlaySound(SoundType.Hurt);
         }
 
-        if (bodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.PlatformLayer))
+        if (BodyCapsuleCollider.IsTouchingLayers(LayersManager.Instance.PlatformLayer))
         {
-            animator.SetBool(model.JumpBoolName, false);
-            model.IsGrounded = true;
+            animator.SetBool(Controller.Model.JumpBoolName, false);
+            Controller.Model.IsGrounded = true;
         }
+    }
+
+    public void DecreaseLives()
+    {
+        Controller.Model.Lives--;
+
+        if (Controller.Model.Lives >= 0)
+            onPlayerLivesChange?.Invoke(Controller.Model.Lives);
+
+        if (Controller.Model.Lives <= 0)
+            ProcessPlayerDeath();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        animator.SetBool(model.HurtBoolName, false);
+        animator.SetBool(Controller.Model.HurtBoolName, false);
     }
 
     public void PlayFootStepSound()
     {
-        if(model.IsGrounded)
+        if (Controller.Model.IsGrounded)
             AudioService.Instance.PlaySound(SoundType.Footsteps);
     }
 }
