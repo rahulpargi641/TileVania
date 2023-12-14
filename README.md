@@ -45,14 +45,14 @@
 ### Code Structure and Game Design
 #### Code Structure
 
-    MVP (Model-View-Presenter):
-        - The codebase is organized using the Model-View-Presenter (MVP) architectural pattern.
+    MVC-S (Model-View-Controller-Service):
+        - The codebase is organized using the MVC-S architectural pattern.
         - This approach maintains a clear separation of concerns:
            - The Model manages data.
-           - The View acts as a passive component handled by Unity.
-           - The Presenter is responsible for updating both the View and Model.
+           - The View is responsible for UI-related tasks and input handling.
+           - The Controller is responsible for updating both the View and Model.
         - Classes for Player, Enemy, Arrow, Coin, Score, GameOver, LevelComplete, MainMenu, and 
-          PlayerShooting have been implemented following the MVP pattern.
+          PlayerShooting have been implemented following the MVC pattern.
 
     Singletons:
         - Centralized control is ensured through the implementation of Singleton patterns.
