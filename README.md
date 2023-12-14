@@ -85,7 +85,7 @@
     - Created multiple layers, including platform, Enemy, Obstacle, Water, Bouncy, and Player, to 
       distinguish between different types of tiles.
 
-#### Enchanced Camera Tracking
+#### Enhanced Camera Tracking
 
     - Employed Cinemachine to smoothly follow the player. 
     - Utilized state-driven cameras like the run camera, climb camera, and idle camera for seamless 
