@@ -28,26 +28,22 @@ public class Sound
 
     public void Play()
     {
-        if (audioSource != null)
-            audioSource.Play();
+        audioSource?.Play();
     }
 
     public void Stop()
     {
-        if (audioSource != null)
-            audioSource.Stop();
+        audioSource?.Stop();
     }
 
     public void Pause()
     {
-        if (audioSource != null)
-            audioSource.Pause();
+        audioSource?.Pause();
     }
 
     public void UnPause()
     {
-        if (audioSource != null)
-            audioSource.UnPause();
+        audioSource?.UnPause();
     }
 
     public bool IsPlaying()

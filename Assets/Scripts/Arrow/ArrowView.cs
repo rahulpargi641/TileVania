@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ArrowView : MonoBehaviour
 {
-    public static event Action<EnemyView> onArrowHit; // I did not create separate 'EventService' for handling events because it helps prevent bugs. Using a singleton to invoke events can easily lead to bugs since events can be invoked from anywhere. If I have 50 scripts, they could invoke events from all 50 scripts. That's why it's better to have events in the script that will invoked them.
+    public static event Action<EnemyView> onArrowHit;
 
     public static event Action<ArrowView> onArrowCollided; 
     
@@ -23,6 +23,11 @@ public class ArrowView : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        MoveArrow();
+    }
+
+    private void MoveArrow()
     {
         float xSpeed = transform.localScale.y * model.ArrowSpeed;
         rigidbody.velocity = new Vector2(xSpeed, 0f);

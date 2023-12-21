@@ -9,9 +9,7 @@ public class CoinSpawner : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerView>())
-        {
             SpawnCoins();
-        }
     }
 
     public void SpawnCoins()
@@ -20,8 +18,7 @@ public class CoinSpawner : MonoBehaviour
 
         areCoinsSpawned = true;
 
-        foreach (Transform spawnPoint in spawnPoints) // Performance difference is negligible between for and foreach. since foreach provides more readability so its good idea to use foreach
-                                                      //  where you don't need to access the elements by index.
+        foreach (Transform spawnPoint in spawnPoints)
         {
             CoinService.Instance.SpawnCoin(spawnPoint.position);
         }

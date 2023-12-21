@@ -11,26 +11,30 @@ public class ObjectPoolGeneric<T>
         {
             if (!pooledItem.Value.IsUsed)
             {
-                pooledItem.Value.IsUsed = true;
+                MarkItemAsUsed(pooledItem.Key);
                 return pooledItem.Key;
             }
         }
 
-        T item = CreateItem();
-        Item newItem = new Item();
-        newItem.IsUsed = true;
-        pooledItems[item] = newItem;
+        T newItem = CreateAndInitializeItem();
+        MarkItemAsUsed(newItem);
 
-        return item;
+        return newItem;
     }
 
     public void ReturnItem(T itemToReturn)
     {
         if (pooledItems.TryGetValue(itemToReturn, out var pooledItem))
         {
-            pooledItem.IsUsed = false;
+            MarkItemAsUnused(itemToReturn);
             Console.WriteLine("Item returned to the pool: " + itemToReturn);
         }
+    }
+
+    public void CleanupUnusedItems()
+    {
+        var unusedItems = FindUnusedItems();
+        RemoveUnusedItems(unusedItems);
     }
 
     protected virtual T CreateItem()
@@ -38,17 +42,25 @@ public class ObjectPoolGeneric<T>
         return default(T);
     }
 
-    public void Initialize(T item)
+    private void MarkItemAsUsed(T item)
     {
-        // item will be used to assign the member variable in child classes
+        pooledItems[item].IsUsed = true;
     }
 
-    // For optimizing the the memory usage during runtime by removing Unused items. For example : Let's say Player is in a specific area of the level and is has specific type of enemies
-    // and we are spawning enemies from the pool. let's say we created pool of 10 enemies. after some time player is in the different area of the level now 
-    // it has different type of enemies than before now we are spawing enemy from the pool and this time these are different enemies and let's say we created 
-    // 15 enemies this time. Now enemies that we created before are no longer in need but still occupying space in the memory which need to be get rid of to optimizing the memory usage.
-    // this is what this fuction is doing. will be used to remove unused items.
-    public void CleanupUnusedItems()
+    private void MarkItemAsUnused(T item)
+    {
+        pooledItems[item].IsUsed = false;
+    }
+
+    private T CreateAndInitializeItem()
+    {
+        T newItem = CreateItem();
+        Initialize(newItem);
+        pooledItems[newItem] = new Item { IsUsed = true };
+        return newItem;
+    }
+
+    private List<T> FindUnusedItems()
     {
         var unusedItems = new List<T>();
         foreach (var kvp in pooledItems)
@@ -58,11 +70,20 @@ public class ObjectPoolGeneric<T>
                 unusedItems.Add(kvp.Key);
             }
         }
+        return unusedItems;
+    }
 
+    private void RemoveUnusedItems(List<T> unusedItems)
+    {
         foreach (var item in unusedItems)
         {
             pooledItems.Remove(item);
         }
+    }
+
+    public void Initialize(T item)
+    {
+        // item will be used to assign the member variable in child classes
     }
 
     private class Item

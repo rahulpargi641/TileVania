@@ -4,13 +4,11 @@ public class CoinService : MonoSingletonGeneric<CoinService>
 {
     [SerializeField] CoinSO coinSO;
 
-    private CoinPool coinPool;
+    private CoinPool coinPool = new CoinPool();
 
     // Start is called before the first frame update
     void Start()
     {
-        coinPool = new CoinPool();
-
         CoinView.onCoinPickedUp += ReturnCoinToPool;
     }
 
@@ -21,10 +19,11 @@ public class CoinService : MonoSingletonGeneric<CoinService>
 
     public void SpawnCoin(Vector2 spawnPointPos)
     {
-        CoinView coinPresenter = coinPool.GetCoin(coinSO.coinView);
-        coinPresenter.InitializeModel(coinSO);
-        coinPresenter.SetTransform(spawnPointPos);
-        coinPresenter.EnableCoin();
+        CoinView coinView = coinPool.GetCoin(coinSO.coinView);
+        coinView.InitializeModel(coinSO);
+
+        coinView.SetTransform(spawnPointPos);
+        coinView.EnableCoin();
     }
 
     private void ReturnCoinToPool(CoinView coinView)

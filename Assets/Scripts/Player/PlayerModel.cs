@@ -9,7 +9,6 @@ public class PlayerModel
     public int Lives { get; set; }
     public bool IsAlive { get;  set; } = true;
     public bool IsGrounded { get; set; } = true;
-    public bool ShootingAnimationEnd { get; set; } = false;
     public float GravityScaleAtStart { get; set; }
 
     public string idleBoolName { get; private set; }

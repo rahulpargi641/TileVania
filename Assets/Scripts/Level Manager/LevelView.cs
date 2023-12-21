@@ -15,23 +15,33 @@ public class LevelView : MonoBehaviour
     {
         model = new LevelModel();
 
-        restartButton.onClick.AddListener(RestartGame);
-        quitButton.onClick.AddListener(QuitGame);
-        pauseScreen.SetActive(false);
+        InitializeButtons();
+
+        pauseScreen.SetActive(false); // Disable Pause Screen
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        PlayerView.onPlayerDeath += GameOver;
+        PlayerController.onPlayerDeath += GameOver;
     }
 
     private void OnDestroy()
     {
-        PlayerView.onPlayerDeath -= GameOver;
+        PlayerController.onPlayerDeath -= GameOver;
     }
 
     private void Update()
+    {
+        HandlePauseInput();
+    }
+
+    private void InitializeButtons()
+    {
+        restartButton.onClick.AddListener(RestartGame);
+        quitButton.onClick.AddListener(QuitGame);
+    }
+
+    private void HandlePauseInput()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -63,7 +73,7 @@ public class LevelView : MonoBehaviour
 
     private void QuitGame()
     {
-        Application.Quit(); 
+        Application.Quit();
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
@@ -84,5 +94,3 @@ public class LevelView : MonoBehaviour
         SceneManager.LoadScene(gameOverSceneIndex);
     }
 }
-
-

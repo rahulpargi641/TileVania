@@ -10,13 +10,13 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        PlayerView.onPlayerLivesChange += UpdatePlayerLivesUI;
+        PlayerController.onPlayerLivesChange += UpdatePlayerLivesUI;
         CoinView.onCoinPickup += IncreaseScore;
     }
 
     private void OnDestroy()
     {
-        PlayerView.onPlayerLivesChange -= UpdatePlayerLivesUI;
+        PlayerController.onPlayerLivesChange -= UpdatePlayerLivesUI;
         CoinView.onCoinPickup -= IncreaseScore;
     }
 

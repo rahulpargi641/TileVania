@@ -4,13 +4,10 @@ public class EnemyService : MonoSingletonGeneric<EnemyService>
 {
     [SerializeField] EnemySO enemySO;
 
-    private EnemyPool enemyPool;
+    private EnemyPool enemyPool = new EnemyPool();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        enemyPool = new EnemyPool();
-
         ArrowView.onArrowHit += ReturnEnemyToPool;
     }
 
@@ -23,6 +20,7 @@ public class EnemyService : MonoSingletonGeneric<EnemyService>
     {
         EnemyView enemyView = enemyPool.GetEnemy(enemySO.enemyView);
         enemyView.InitialzeModel(enemySO);
+
         enemyView.SetTransform(spawnPointPos);
         enemyView.EnableEnemy();
     }

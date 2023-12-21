@@ -10,14 +10,19 @@ public class GameOver : MonoBehaviour
 
     private void Awake()
     {
-        playAgainButton.onClick.AddListener(PlayAgain);
-        mainMenuButton.onClick.AddListener(MainMenu);
-        quitButton.onClick.AddListener(QuitGame);
+        InitializeButtons();
     }
 
     private void Start()
     {
         AudioService.Instance.StopSound(SoundType.BackgroundMusic);
+    }
+
+    private void InitializeButtons()
+    {
+        playAgainButton.onClick.AddListener(PlayAgain);
+        mainMenuButton.onClick.AddListener(MainMenu);
+        quitButton.onClick.AddListener(QuitGame);
     }
 
     private void PlayAgain()
@@ -37,9 +42,8 @@ public class GameOver : MonoBehaviour
     private void QuitGame()
     {
         if (Application.isPlaying)
-        {
-            Application.Quit(); // Quit the game directly
-        }
+            Application.Quit(); 
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop playing in the editor
 #endif

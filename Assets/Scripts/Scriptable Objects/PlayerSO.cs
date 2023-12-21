@@ -15,8 +15,7 @@ public class PlayerSO : ScriptableObject
     public float climbSpeed = 7f;
     public Vector2 pushVelocity = new Vector2(5f, 5f);
 
-
-    [Header("Animation Names")]
+    [Header("Animator Parameters Names")]
     public string idleBoolName = "Idling";
     public string runBoolName = "Running";
     public string jumpBoolName = "Jumping";
@@ -24,9 +23,6 @@ public class PlayerSO : ScriptableObject
     public string shootBoolName = "Shooting";
     public string hurtBoolName = "Hurt";
     public string deadTriggerName = "Die";
-
-    //[Header("Properties")]
-    //public ItemType itemType; // Enum to specify the item type (e.g., Consumable, Weapon, Armor, etc.).
 }
 
 

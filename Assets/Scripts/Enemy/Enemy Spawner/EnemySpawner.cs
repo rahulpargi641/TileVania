@@ -16,8 +16,7 @@ public class EnemySpawner : MonoBehaviour // Multiple EnemySpawner exists throug
     {
         if (areEnemiesSpawned) return;
 
-        foreach (Transform spawnPoint in spawnPoints) // Performance difference is negligible between for and foreach. since foreach provides more readability so its good idea to use foreach
-                                                      //  where you don't need to access the elements by index.
+        foreach (Transform spawnPoint in spawnPoints)
             EnemyService.Instance.SpawnEnemy(spawnPoint.position);
 
         areEnemiesSpawned = true;

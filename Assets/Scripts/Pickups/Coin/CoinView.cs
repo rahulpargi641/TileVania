@@ -19,7 +19,7 @@ public class CoinView : MonoBehaviour
         {
             onCoinPickup?.Invoke(model.pointsGain);
             AudioService.Instance.PlaySound(SoundType.CoinPickup);
-            onCoinPickedUp?.Invoke(this);
+            onCoinPickedUp?.Invoke(this); // returns coin to the pool
         }
     }
 
@@ -33,7 +33,7 @@ public class CoinView : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    internal void SetTransform(Vector2 spawnPointPos)
+    public void SetTransform(Vector2 spawnPointPos)
     {
         transform.position = spawnPointPos;
     }

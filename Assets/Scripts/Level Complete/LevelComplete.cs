@@ -9,13 +9,18 @@ public class LevelComplete : MonoBehaviour
 
     private void Awake()
     {
-        playAgainButton.onClick.AddListener(PlayAgain);
-        quitButton.onClick.AddListener(QuitGame);
+        InitializeButtons();
     }
 
     private void Start()
     {
         AudioService.Instance.StopSound(SoundType.BackgroundMusic);
+    }
+
+    private void InitializeButtons()
+    {
+        playAgainButton.onClick.AddListener(PlayAgain);
+        quitButton.onClick.AddListener(QuitGame);
     }
 
     private void PlayAgain()

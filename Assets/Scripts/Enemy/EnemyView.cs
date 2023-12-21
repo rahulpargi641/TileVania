@@ -18,12 +18,12 @@ public class EnemyView : MonoBehaviour
 
     void Update()
     {
-        rigidBody2D.velocity = new Vector2(model.MoveSpeed, 0f);
+        rigidBody2D.velocity = new Vector2(model.MoveSpeed, 0f); // Move Enemy along x axis
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        model.MoveSpeed = -model.MoveSpeed;
+        model.MoveSpeed = -model.MoveSpeed; // Change Moving Direction
         FlipEnemy();
     }
 

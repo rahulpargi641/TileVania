@@ -4,13 +4,11 @@ public class ArrowService : MonoSingletonGeneric<ArrowService>
 {
     [SerializeField] ArrowSO arrowSO;
 
-    private ArrowPool arrowPool;
+    private ArrowPool arrowPool = new ArrowPool();
 
     // Start is called before the first frame update
     private void Start()
     {
-        arrowPool = new ArrowPool();
-
         ArrowView.onArrowCollided += ReturnArrowToPool;
     }
 
@@ -23,6 +21,7 @@ public class ArrowService : MonoSingletonGeneric<ArrowService>
     {
         ArrowView arrowView = arrowPool.GetArrow(arrowSO.arrowPrefab);
         arrowView.InitializeModel(arrowSO);
+
         arrowView.SetTransform(spawnPointPos, spawnPointScale);
         arrowView.EnableArrow();
     }

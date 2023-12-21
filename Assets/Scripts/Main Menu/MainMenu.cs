@@ -12,9 +12,7 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startButton.onClick.AddListener(PlayGame);
-        quitButton.onClick.AddListener(QuitGame);
-        howToPlay.onClick.AddListener(ShowInstructionScreen);
+        InitializeButtons();
 
         AudioService.Instance.PlaySound(SoundType.BackgroundMusic);
     }
@@ -22,7 +20,14 @@ public class MainMenu : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-            HideInstructionsScreen();
+            HideInstructionsScreen(); // goes back to main menu
+    }
+
+    private void InitializeButtons()
+    {
+        startButton.onClick.AddListener(PlayGame);
+        quitButton.onClick.AddListener(QuitGame);
+        howToPlay.onClick.AddListener(ShowInstructionScreen);
     }
 
     private void PlayGame()

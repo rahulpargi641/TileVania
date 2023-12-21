@@ -11,8 +11,7 @@ public class AudioService : MonoSingletonGeneric<AudioService>
     {
         base.Awake();
 
-        foreach (Sound sound in sounds) // Performance difference is negligible between for and foreach. since foreach provides more readability its good idea to use foreach,
-                                        //  where you don't need to access the elements by index.
+        foreach (Sound sound in sounds)
         {
             sound.Initialize(gameObject.AddComponent<AudioSource>());
             soundDictionary[sound.soundType] = sound;
